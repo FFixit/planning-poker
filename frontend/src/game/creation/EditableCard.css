@@ -1,0 +1,45 @@
+div.editable-card {
+	font-size: 3rem;
+	display: flex;
+	flex-direction: column;
+}
+
+div.editable-card > div.input-card {
+	background: lightblue;
+	color: black;
+	border: 0.06em solid lightcyan;
+	margin: 0.33em 0.33em 0.16em 0.33em;
+	/* padding: 1em; */
+	height: 3em;
+	width: 2em;
+	border-radius: 0.16em;
+	display: flex;
+	flex-direction: column;
+	align-items: stretch;
+	justify-content: center;
+	transition: transform 200ms;
+}
+
+div.editable-card > div.input-card > input[type="text"] {
+	margin: 0;
+	padding: 0;
+	border: none;
+	background: none;
+	font-size: inherit;
+	text-align: center;
+	/* filter: grayscale(1); */
+}
+
+div.editable-card > button.remove-button {
+	font-size: 1rem;
+	width: 6em;
+	border: 0.2em solid lightcyan;
+	margin: 0 1em 1em 1em;
+	border-radius: 0.5em;
+	box-sizing: content-box;
+    padding: 0;
+}
+
+div.editable-card > button.remove-button:hover{
+    cursor: pointer;
+}

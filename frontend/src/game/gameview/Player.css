@@ -1,0 +1,57 @@
+div.player {
+	font-size: 1.5rem;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	width: 5em;
+}
+
+div.player > div.player-card {
+	background-color: lightblue;
+	color: black;
+	height: 3em;
+	width: 2em;
+	border-radius: 0.16em;
+	border: 0.06em solid lightcyan;
+	display: flex;
+	flex-direction: column;
+	align-items: stretch;
+	justify-content: center;
+    transition: background-color 1s linear;
+}
+
+div.player > div.player-card.no-value {
+	background-color: purple;
+	color: white;
+}
+
+div.player > div.player-card > p {
+	margin: 0;
+	text-align: center;
+}
+
+@keyframes spin {
+	0% {
+		transform: rotate(0deg);
+	}
+
+	100% {
+		transform: rotate(360deg);
+	}
+}
+
+div.player > div.player-card.no-value > p {
+	animation: spin 1s linear infinite;
+}
+
+div.player > div.player-name {
+	width: 100%;
+}
+
+div.player > div.player-name > p {
+	margin: 0;
+	text-align: center;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}

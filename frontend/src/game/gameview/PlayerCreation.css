@@ -1,0 +1,32 @@
+form.player-creation {
+	width: 100%;
+}
+
+form.player-creation {
+	display: flex;
+	flex-direction: column;
+}
+
+form.player-creation > label {
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+}
+
+form.player-creation > label > * {
+	margin: 0;
+	padding: 0;
+	min-width: 0;
+	flex-basis: 100%;
+}
+
+form.player-creation > label > p {
+	white-space: nowrap;
+	flex-shrink: 2;
+}
+
+form.player-creation input[type="text"] {
+	margin: 0 0 1em 1em;
+	flex-shrink: 1;
+}
