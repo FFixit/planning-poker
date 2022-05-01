@@ -12,6 +12,7 @@ function GameView({ socket, playerName, setPlayerName }) {
 	const [gameState, setGameState] = useState({
 		cards: [],
 		players: [],
+		gameStats: null,
 	});
 
 	const [selectedCard, setSelectedCard] = useState(null);
@@ -50,7 +51,7 @@ function GameView({ socket, playerName, setPlayerName }) {
 						};
 					})}
 				/>
-				<GameStats state={gameState} />
+				<GameStats gameStats={gameState.gameStats} />
 			</div>
 			<CardSelection
 				cards={gameState.cards}

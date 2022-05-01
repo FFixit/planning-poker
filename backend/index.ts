@@ -8,16 +8,12 @@ import { getNextGameId } from "./lib";
 
 const port = 8080;
 
-const jsonParser = bodyParser.json();
 const app = express();
 const httpServer = http.createServer(app);
 const io = new Server(httpServer);
 
 let games: Map<string, GameState> = new Map();
 
-app.get("/", (req, res) => {
-  res.send("Hello World!");
-});
 io.on("connection", (socket) => {
   console.log("client connected");
 
@@ -80,6 +76,7 @@ io.on("connection", (socket) => {
     socket.rooms.forEach((room) => {
       if (games.get(room)) {
         games.get(room).removePlayer(socket.id);
+        socket.leave(room);
         updateState(room);
       }
     });
