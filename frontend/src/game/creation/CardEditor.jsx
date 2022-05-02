@@ -1,37 +1,36 @@
 import "./CardEditor.css";
 import EditableCard from "./EditableCard";
 
-function CardEditor(props) {
+function CardEditor({ cards, setCards }) {
+	const onChangeCard = (index, newValue) => {
+		let newCards = cards.slice();
+		newCards[index] = newValue;
+		setCards(newCards);
+	};
+
+	const onRemoveCard = (index) => {
+		let newCards = cards.slice();
+		newCards.splice(index, 1);
+		setCards(newCards);
+	};
+
+	const addCard = () => {
+		let newCards = cards.slice();
+		newCards.push("");
+		setCards(newCards);
+	};
+
 	return (
 		<div className="card-editor">
-			{props.cards.map((card, i) => (
+			{cards.map((card, i) => (
 				<EditableCard
-					key={i.toString()}
+					key={i}
 					value={card}
-					onChange={(event) => {
-						let newCards = props.cards.slice();
-						let newValue = isNaN(parseInt(event.target.value))
-							? event.target.value
-							: parseInt(event.target.value).toString();
-
-						newCards[i] = newValue;
-						props.setCards(newCards);
-					}}
-					onRemove={(event) => {
-						let newCards = props.cards.slice();
-						newCards.splice(i, 1);
-						props.setCards(newCards);
-					}}
+					onChange={onChangeCard}
+					onRemove={onRemoveCard}
 				/>
 			))}
-			<button
-				className="add-card"
-				onClick={() => {
-					let newCards = props.cards.slice();
-					newCards.push("");
-					props.setCards(newCards);
-				}}
-			>
+			<button className="add-card" onClick={addCard}>
 				<p>+</p>
 			</button>
 		</div>
