@@ -1,16 +1,22 @@
+import LoadingDots from "../../misc/LoadingDots";
 import "./Player.css";
 
-function Player(props) {
-	let hasValue = !!props.value;
-	let displayValue = hasValue ? props.value : "?";
-	let className = "player-card" + (hasValue ? "" : " no-value");
+function Player({ name, value }) {
+	let displayValue,
+		cssClasses = ["player-card"];
+	if (typeof value === "boolean" && value === true) {
+		displayValue = <p>?</p>;
+		cssClasses.push("value-picked");
+	} else if (typeof value === "number") {
+		displayValue = <p>{value}</p>;
+	} else {
+		displayValue = <LoadingDots />;
+	}
 	return (
 		<div className="player">
-			<div className={className}>
-				<p>{displayValue}</p>
-			</div>
+			<div className={cssClasses.join(" ")}>{displayValue}</div>
 			<div className="player-name">
-				<p>{props.name}</p>
+				<p>{name}</p>
 			</div>
 		</div>
 	);

@@ -12,11 +12,11 @@ function StartPage(props) {
 							<p>Game-ID:</p>
 							<input type="text" />
 						</label>
-						<input type="submit" value="Join" />
+						<input className="button" type="submit" value="Join" />
 					</form>
 				</div>
 				<div className="create-session">
-					<Link to="/game">Create Session</Link>
+					<Link className="button" to="/game">Create Session</Link>
 				</div>
 			</div>
 		</div>

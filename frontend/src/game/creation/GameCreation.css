@@ -1,44 +1,49 @@
 div.game-creation {
 	height: 100%;
 	display: flex;
+}
+
+div.game-creation > div {
+	height: 100%;
+	flex: 0 0 50%;
+}
+
+div.game-creation > div.right-section {
+	display: flex;
 	flex-direction: column;
-	align-items: center;
 	justify-content: space-around;
+	align-items: center;
 }
-
 div.game-creation h1 {
-	margin-left: 0.5em;
+	margin: 0 0 0.5em 0.5em;
 }
 
-div.game-creation > div.game-creation-player {
-	width: 25%;
+div.game-creation div.game-creation-player {
+	min-width: 50%;
 }
-div.game-creation > div.game-creation-player > input {
+div.game-creation div.game-creation-player > input {
 	width: 100%;
 	box-sizing: border-box;
 	font-size: 2rem;
 }
 
-div.game-creation > div.game-creation-cards {
+div.game-creation div.game-creation-cards {
+	padding: 1em 0 1em 0;
+	height: 100%;
 	width: 100%;
-}
-div.game-creation > div.game-creation-cards > h1 {
-	margin-left: 0.5em;
+	box-sizing: border-box;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
 }
 
-div.game-creation > div.game-creation-button {
-	width: 25%;
+div.game-creation div.game-creation-button {
+	min-width: 50%;
 }
-div.game-creation > div.game-creation-button > button {
+div.game-creation div.game-creation-button > button {
 	width: 100%;
 	font-size: 2rem;
-	color: black;
-	border: none;
-	background: white;
-	border-radius: 0.2em;
-	cursor: pointer;
-	padding: 0.5em;
 }
-div.game-creation > div.game-creation-button > button:hover {
+div.game-creation div.game-creation-button > button:hover {
 	background: lightblue;
 }

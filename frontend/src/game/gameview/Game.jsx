@@ -4,7 +4,7 @@ import "./Game.css";
 import GameView from "./GameView";
 import PlayerCreation from "./PlayerCreation";
 
-function Game(props) {
+function Game() {
 	const [playerName, setPlayerName, socket] = useOutletContext();
 
 	const [isPlayerCreationDone, setPlayerCreationDone] = useState(

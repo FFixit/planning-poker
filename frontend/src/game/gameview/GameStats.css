@@ -4,6 +4,10 @@ div.game-stats {
 	align-items: center;
 }
 
+div.game-stats div.loading-dots {
+	font-size: 3rem;
+}
+
 div.game-stats > div.table-container {
 	min-width: 50%;
 }

@@ -11,8 +11,9 @@ function GameView({ socket, playerName, setPlayerName }) {
 
 	const [gameState, setGameState] = useState({
 		cards: [],
-		players: [],
+		players: {},
 		gameStats: null,
+		isRoundFinished: false,
 	});
 
 	const [selectedCard, setSelectedCard] = useState(null);
@@ -24,6 +25,11 @@ function GameView({ socket, playerName, setPlayerName }) {
 		socket.on("update-state", (newState) => {
 			console.log("game state updating", newState);
 			setGameState(newState);
+			if (
+				typeof newState.players[socket.id].selectedCard === "undefined"
+			) {
+				setSelectedCard(null);
+			}
 		});
 
 		return () => {
@@ -32,26 +38,32 @@ function GameView({ socket, playerName, setPlayerName }) {
 		};
 	}, [sessionId, playerName, socket, setPlayerName]);
 
+	const players = Object.entries(gameState.players).filter(
+		([id, player]) => id !== socket.id
+	);
+
 	const selectCard = (index) => {
 		setSelectedCard(index);
 		socket.emit("select-card", sessionId, index);
 	};
 
+	const nextRound = () => {
+		socket.emit("next-round", sessionId);
+	};
+
 	return (
 		<div className="game-view">
 			<div className="upper-section">
-				<OtherPlayers
-					players={gameState.players.map((player) => {
-						return {
-							name: player.name,
-							value:
-								player.selectedCard != null
-									? gameState.cards[player.selectedCard]
-									: null,
-						};
-					})}
-				/>
-				<GameStats gameStats={gameState.gameStats} />
+				<OtherPlayers players={players} />
+				<div className="game-control">
+					<GameStats gameStats={gameState.gameStats} />
+					<button
+						className="button button-next-round"
+						onClick={nextRound}
+					>
+						Next round
+					</button>
+				</div>
 			</div>
 			<CardSelection
 				cards={gameState.cards}

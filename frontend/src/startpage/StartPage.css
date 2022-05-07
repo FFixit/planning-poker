@@ -66,11 +66,9 @@ div.start-page div.join-session > form input[type="text"] {
 
 div.start-page a {
 	width: 50%;
-	text-decoration: none;
-	text-align: center;
 }
 
-div.start-page input[type="submit"],
+/* div.start-page input[type="submit"],
 div.start-page a {
 	color: black;
 	border: none;
@@ -78,7 +76,7 @@ div.start-page a {
 	border-radius: 0.2em;
 	cursor: pointer;
 	padding: 0.5em;
-}
+} */
 
 div.start-page input[type="submit"]:hover,
 div.start-page a:hover {

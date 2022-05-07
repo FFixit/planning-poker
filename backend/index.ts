@@ -1,9 +1,7 @@
-import bodyParser from "body-parser";
 import express from "express";
 import { Server } from "socket.io";
 import http from "http";
 import GameState from "./classes/GameState";
-import Player from "./classes/Player";
 import { getNextGameId } from "./lib";
 
 const port = 8080;
@@ -19,56 +17,67 @@ io.on("connection", (socket) => {
 
   function updateState(sessionId) {
     console.log(sessionId, "Updating game state");
-    io.in(sessionId)
-      .fetchSockets()
-      .then((sockets) =>
-        sockets.forEach((remoteSocket) => {
-          let newState = games.get(sessionId).toObject(remoteSocket.id);
-          remoteSocket.emit("update-state", newState);
-        })
-      );
+    const game = getGame(sessionId);
+    if (game) {
+      let newState = game.toObject();
+      io.in(sessionId).emit("update-state", newState);
+    }
   }
 
   socket.on("create-game", (cards, playerName) => {
     const sessionId = getNextGameId();
     console.log(sessionId, "Creating new game session");
-    const gameState = new GameState(cards);
+    const gameState = new GameState(cards, socket.id, playerName);
     games.set(sessionId, gameState);
+    socket.join(sessionId);
     socket.emit("game-created", sessionId);
   });
 
   socket.on("join-game", (sessionId, playerName) => {
     console.log(sessionId, "Player joining game with name", playerName);
-    const game = games.get(sessionId);
-    if (!game) {
-      console.error("Game does not exist, ID:", sessionId);
-      return;
+    const game = getGame(sessionId);
+    if (game) {
+      if (game.hasPlayer(socket.id)) {
+        console.log(
+          sessionId,
+          "Game already has player ID",
+          socket.id,
+          ", name",
+          playerName
+        );
+      } else {
+        game.addPlayer(socket.id, playerName);
+        socket.join(sessionId);
+      }
+
+      updateState(sessionId);
     }
-    game.addPlayer(socket.id, new Player(playerName));
-    socket.join(sessionId);
-    updateState(sessionId);
   });
 
   socket.on("leave-game", (sessionId) => {
-    const game = games.get(sessionId);
-    if (!game) {
-      console.error("Game does not exist, ID:", sessionId);
-      return;
+    const game = getGame(sessionId);
+    if (game) {
+      game.removePlayer(socket.id);
+      socket.leave(sessionId);
+      updateState(sessionId);
     }
-    game.removePlayer(socket.id);
-    socket.leave(sessionId);
-    updateState(sessionId);
   });
 
   socket.on("select-card", (sessionId, index) => {
     console.log(sessionId, "Player selecting card", index);
-    const game = games.get(sessionId);
-    if (!game) {
-      console.error("Game does not exist, ID:", sessionId);
-      return;
+    const game = getGame(sessionId);
+    if (game) {
+      game.selectPlayerCard(socket.id, index);
+      updateState(sessionId);
     }
-    game.selectPlayerCard(socket.id, index);
-    updateState(sessionId);
+  });
+
+  socket.on("next-round", (sessionId) => {
+    const game = getGame(sessionId);
+    if (game) {
+      game.resetRound();
+      updateState(sessionId);
+    }
   });
 
   socket.on("disconnecting", (reason) => {
@@ -86,3 +95,12 @@ io.on("connection", (socket) => {
 httpServer.listen(port, () => {
   console.log(`listening on port ${port}`);
 });
+
+function getGame(sessionId) {
+  const game = games.get(sessionId);
+  if (!game) {
+    console.error("Game does not exist, ID:", sessionId);
+    return;
+  }
+  return game;
+}

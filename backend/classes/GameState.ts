@@ -2,18 +2,21 @@ import Player from "./Player";
 
 class GameState {
   private players: Map<string, Player> = new Map();
+  private adminId: string;
   private cards: Array<string> = [];
   private timeCreated: Date;
   private isRoundFinished: boolean = false;
   private gameStats = null;
 
-  constructor(cards) {
+  constructor(cards: string[], firstPlayerId: string, firstPlayerName: string) {
     this.cards = cards;
     this.timeCreated = new Date();
+    this.addPlayer(firstPlayerId, firstPlayerName);
+    this.setAdmin(firstPlayerId);
   }
 
-  addPlayer(id: string, player: Player): void {
-    this.players.set(id, player);
+  addPlayer(id: string, playerName: string): void {
+    this.players.set(id, new Player(playerName));
   }
 
   removePlayer(id: string): void {
@@ -21,24 +24,50 @@ class GameState {
     this.updateIsRoundFinished();
   }
 
-  selectPlayerCard(id: string, index: number): void {
-    this.players.get(id).setSelectedCard(index);
+  hasPlayer(playerId: string): boolean {
+    return this.players.has(playerId);
+  }
+
+  setAdmin(playerId: string): void {
+    this.adminId = playerId;
+  }
+
+  getAdmin(): string {
+    return this.adminId;
+  }
+
+  selectPlayerCard(playerId: string, index: number): void {
+    this.players.get(playerId).setSelectedCard(index);
     this.updateIsRoundFinished();
+  }
+
+  resetRound(): void {
+    for (const [key, player] of this.players) {
+      player.setSelectedCard(null);
+    }
+    this.gameStats = null;
+    this.isRoundFinished = false;
   }
 
   getTimeCreated(): Date {
     return this.timeCreated;
   }
 
-  toObject(as: string): object {
+  toObject(): {
+    cards: string[];
+    isRoundFinished: boolean;
+    gameStats: any;
+    players: {};
+  } {
     return {
       cards: this.cards,
-      selectedCard: this.players.get(as).getSelectedCard(),
       isRoundFinished: this.isRoundFinished,
       gameStats: this.gameStats,
-      players: Array.from(this.players.keys())
-        .filter((key) => key != as)
-        .map((key) => this.players.get(key).toObject()),
+      players: Array.from(this.players).reduce(
+        (obj, [key, player]) =>
+          Object.assign(obj, { [key]: player.toObject(this.isRoundFinished) }),
+        {}
+      ),
     };
   }
 

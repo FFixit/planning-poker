@@ -4,6 +4,7 @@ class Player {
 
   constructor(name) {
     this.name = name;
+    this.selectedCard = null;
   }
 
   setSelectedCard(index: number): void {
@@ -14,10 +15,25 @@ class Player {
     return this.selectedCard;
   }
 
-  toObject(): object {
+  private getMaskedCardValue(isGameFinished: boolean): number | true {
+    if (isGameFinished) {
+      return this.selectedCard;
+    } else {
+      if (this.selectedCard) {
+        return true;
+      } else {
+        return;
+      }
+    }
+  }
+
+  toObject(isGameFinished: boolean): {
+    name: string;
+    selectedCard: number | true;
+  } {
     return {
       name: this.name,
-      selectedCard: this.selectedCard,
+      selectedCard: this.getMaskedCardValue(isGameFinished),
     };
   }
 }

@@ -4,11 +4,11 @@ import Player from "./Player";
 function OtherPlayers(props) {
 	return (
 		<div className="other-players">
-			{props.players.map((player, i) => (
+			{props.players.map(([id, player]) => (
 				<Player
-					key={i}
+					key={id}
 					name={player.name}
-					value={player.value}
+					value={player.selectedCard}
 				></Player>
 			))}
 		</div>

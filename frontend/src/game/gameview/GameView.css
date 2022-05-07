@@ -10,7 +10,7 @@ div.game-view > div.upper-section {
 	display: grid;
 	grid-template-columns: repeat(3, 1fr);
 	grid-template-areas: "a a b";
-    align-items: center;
+	align-items: stretch;
 }
 
 div.game-view > div.upper-section > div.other-players {
@@ -19,4 +19,15 @@ div.game-view > div.upper-section > div.other-players {
 
 div.game-view > div.upper-section > div.game-stats {
 	grid-area: b;
+}
+
+div.game-view .game-control {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-evenly;
+	align-items: center;
+}
+
+div.game-view .button-next-round {
+	font-size: 1rem;
 }

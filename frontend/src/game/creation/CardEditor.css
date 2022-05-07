@@ -1,12 +1,7 @@
 div.card-editor {
-	width: 100%;
-	display: flex;
-	flex-direction: row;
-	align-items: stretch;
-	justify-content: space-between;
-	align-content: stretch;
-	flex-wrap: nowrap;
-	overflow: auto;
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
+	overflow-y: auto;
 }
 
 div.card-editor > button.add-card {

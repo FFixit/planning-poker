@@ -3,7 +3,7 @@ import { useNavigate, useOutletContext } from "react-router-dom";
 import CardEditor from "./CardEditor";
 import "./GameCreation.css";
 
-function GameCreation(props) {
+function GameCreation() {
 	const navigate = useNavigate();
 
 	const [playerName, setPlayerName, socket] = useOutletContext();
@@ -32,23 +32,31 @@ function GameCreation(props) {
 
 	return (
 		<div className="game-creation">
-			<div className="game-creation-player">
-				<h1>Your Name:</h1>
-				<input
-					type="text"
-					name="name"
-					value={playerName}
-					onChange={(event) => setPlayerName(event.target.value)}
-				/>
+			<div className="left-section">
+				<div className="game-creation-cards">
+					<h1>Cards:</h1>
+					<CardEditor cards={cards} setCards={setCards} />
+				</div>
 			</div>
-			<div className="game-creation-cards">
-				<h1>Cards:</h1>
-				<CardEditor cards={cards} setCards={setCards} />
-			</div>
-			<div className="game-creation-button">
-				<button className="create-button" onClick={createGame}>
-					Create
-				</button>
+			<div className="right-section">
+				<div className="game-creation-player">
+					<h1>Your Name:</h1>
+					<input
+						type="text"
+						name="name"
+						value={playerName}
+						onChange={(event) => setPlayerName(event.target.value)}
+					/>
+				</div>
+
+				<div className="game-creation-button">
+					<button
+						className="button create-button"
+						onClick={createGame}
+					>
+						Create
+					</button>
+				</div>
 			</div>
 		</div>
 	);

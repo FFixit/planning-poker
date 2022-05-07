@@ -1,5 +1,6 @@
-div.loading-dots{
-    font-size: 3rem;
+div.loading-dots {
+	text-align: center;
+	transform: translateY(-25%);
 }
 
 div.loading-dots::before {

@@ -1,17 +1,17 @@
 import "./EditableCard.css";
 
-function EditableCard({ key, value, onChange, onRemove }) {
+function EditableCard({ index, value, onChange, onRemove }) {
 	const onChangeHandler = (event) => {
 		let inputValue = event.target.value;
 		let newValue = isNaN(parseInt(inputValue))
 			? inputValue
 			: parseInt(inputValue).toString();
 
-		onChange(key, newValue);
+		onChange(index, newValue);
 	};
 
 	const onRemoveHandler = () => {
-		onRemove(key);
+		onRemove(index);
 	};
 
 	return (

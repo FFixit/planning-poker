@@ -20,7 +20,7 @@ render(
 				path="*"
 				element={
 					<main style={{ padding: "1rem" }}>
-						<p>Error</p>
+						<p>Error: Not found</p>
 					</main>
 				}
 			/>

@@ -25,6 +25,7 @@ function CardEditor({ cards, setCards }) {
 			{cards.map((card, i) => (
 				<EditableCard
 					key={i}
+					index={i}
 					value={card}
 					onChange={onChangeCard}
 					onRemove={onRemoveCard}
