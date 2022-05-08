@@ -11,6 +11,7 @@ div.game-view > div.upper-section {
 	grid-template-columns: repeat(3, 1fr);
 	grid-template-areas: "a a b";
 	align-items: stretch;
+	border-bottom: 1px solid gray;
 }
 
 div.game-view > div.upper-section > div.other-players {
@@ -21,11 +22,16 @@ div.game-view > div.upper-section > div.game-stats {
 	grid-area: b;
 }
 
-div.game-view .game-control {
+div.game-view div.game-control {
 	display: flex;
 	flex-direction: column;
-	justify-content: space-evenly;
+	justify-content: space-between;
 	align-items: center;
+	border-left: 1px solid gray;
+}
+
+div.game-view div.game-control div.admin-buttons {
+	padding: 1em;
 }
 
 div.game-view .button-next-round {

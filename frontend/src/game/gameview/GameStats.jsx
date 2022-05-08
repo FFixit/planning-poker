@@ -2,6 +2,12 @@ import LoadingDots from "../../misc/LoadingDots";
 import "./GameStats.css";
 
 function GameStats({ gameStats }) {
+	const otherStrings =
+		(gameStats &&
+			gameStats.others
+				.map((entry) => entry.count + "x" + entry.key)
+				.join(", ")) ||
+		"-";
 	return (
 		<div className="game-stats">
 			<h1>Game Stats</h1>
@@ -19,14 +25,7 @@ function GameStats({ gameStats }) {
 							</tr>
 							<tr>
 								<td>Others</td>
-								<td>
-									{gameStats.others
-										.map(
-											(entry) =>
-												entry.count + "x" + entry.key
-										)
-										.join(", ") || "-"}
-								</td>
+								<td>{otherStrings}</td>
 							</tr>
 						</tbody>
 					</table>

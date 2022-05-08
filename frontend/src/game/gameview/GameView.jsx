@@ -4,6 +4,7 @@ import "./GameView.css";
 import CardSelection from "./CardSelection";
 import OtherPlayers from "./OtherPlayers";
 import GameStats from "./GameStats";
+import SessionInfo from "./SessionInfo";
 
 function GameView({ socket, playerName, setPlayerName }) {
 	const params = useParams();
@@ -56,13 +57,16 @@ function GameView({ socket, playerName, setPlayerName }) {
 			<div className="upper-section">
 				<OtherPlayers players={players} />
 				<div className="game-control">
+					<SessionInfo sessionId={sessionId} />
 					<GameStats gameStats={gameState.gameStats} />
-					<button
-						className="button button-next-round"
-						onClick={nextRound}
-					>
-						Next round
-					</button>
+					<div className="admin-buttons">
+						<button
+							className="button button-next-round"
+							onClick={nextRound}
+						>
+							Next round
+						</button>
+					</div>
 				</div>
 			</div>
 			<CardSelection
