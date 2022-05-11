@@ -1,7 +1,9 @@
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useNavigate, useOutletContext } from "react-router-dom";
 import "./GameMain.css";
-import socketio from "socket.io-client";
+import socketio, { Socket } from "socket.io-client";
 import { useEffect, useRef, useState } from "react";
+
+type ContextType = [string, (string) => void, Socket];
 
 function GameMain() {
 	const navigate = useNavigate();
@@ -20,10 +22,16 @@ function GameMain() {
 		});
 
 		refSocket.current = socket;
-		return () => socket.disconnect();
+		return () => {
+			socket.disconnect();
+		};
 	}, [refSocket, refNavigate]);
 
 	return <Outlet context={[playerName, setPlayerName, refSocket.current]} />;
 }
 
 export default GameMain;
+
+export function useGameContext() {
+	return useOutletContext<ContextType>();
+}

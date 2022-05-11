@@ -1,7 +1,13 @@
 import "./CardEditor.css";
 import EditableCard from "./EditableCard";
 
-function CardEditor({ cards, setCards }) {
+function CardEditor({
+	cards,
+	setCards,
+}: {
+	cards: string[];
+	setCards: (newCards: string[]) => void;
+}) {
 	const onChangeCard = (index, newValue) => {
 		let newCards = cards.slice();
 		newCards[index] = newValue;

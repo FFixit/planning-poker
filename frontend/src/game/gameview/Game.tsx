@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import { useOutletContext } from "react-router-dom";
 import "./Game.css";
+import { useGameContext } from "./GameMain";
 import GameView from "./GameView";
 import PlayerCreation from "./PlayerCreation";
 
 function Game() {
-	const [playerName, setPlayerName, socket] = useOutletContext();
+	const [playerName, setPlayerName, socket] = useGameContext();
 
 	const [isPlayerCreationDone, setPlayerCreationDone] = useState(
 		playerName !== ""
