@@ -1,7 +1,7 @@
 import "./Card.css";
 
 function Card(props) {
-	let className = "card" + (props.selected ? " selected" : "");
+	let className = "card player-card" + (props.selected ? " selected" : "");
 	return (
 		<div
 			className={className}

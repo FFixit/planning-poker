@@ -3,7 +3,7 @@ import "./Player.css";
 
 function Player({ name, value }) {
 	let displayValue,
-		cssClasses = ["player-card"];
+		cssClasses = ["card", "other-player-card"];
 	if (typeof value === "boolean" && value === true) {
 		displayValue = <p>?</p>;
 		cssClasses.push("value-picked");

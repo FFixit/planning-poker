@@ -5,19 +5,7 @@ div.editable-card {
 }
 
 div.editable-card > div.input-card {
-	background: lightblue;
-	color: black;
-	border: 0.06em solid lightcyan;
-	margin: 0.33em 0.33em 0.16em 0.33em;
-	/* padding: 1em; */
 	height: 3em;
-	width: 2em;
-	border-radius: 0.16em;
-	display: flex;
-	flex-direction: column;
-	align-items: stretch;
-	justify-content: center;
-	transition: transform 200ms;
 }
 
 div.editable-card > div.input-card > input[type="text"] {

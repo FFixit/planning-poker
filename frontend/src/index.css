@@ -1,6 +1,12 @@
+:root {
+	--color-1: hsl(81, 96%, 81%);
+	--color-1-sat: hsl(81, 100%, 70%);
+	--color-2: hsl(192, 96%, 81%);
+}
+
 html {
 	height: 100%;
-	background: black;
+	background: #181818;
 	color: white;
 }
 body {
@@ -29,4 +35,17 @@ body {
 	padding: 0.5em;
 	text-decoration: none;
 	text-align: center;
+}
+
+.card {
+	background: var(--color-1);
+	color: black;
+	border: 0.06em solid lightcyan;
+	margin: 0.33em;
+	width: 2em;
+	border-radius: 0.16em;
+	display: flex;
+	flex-direction: column;
+	align-items: stretch;
+	justify-content: center;
 }

@@ -1,26 +1,27 @@
 div.session-info {
 	font-size: 1.5rem;
-    padding: 1em;
+	padding: 1em;
 	display: flex;
 }
 
 div.session-info span.session-id {
 	display: inline-flex;
-    font-weight: bold;
+	font-weight: bold;
 }
 
 div.session-info span.session-id button.copy-button {
 	background: none;
 	color: white;
 	font-size: 1.5rem;
+	border: none;
 }
 
 div.session-info span.session-id:hover {
 	cursor: pointer;
-	color: lightblue;
+	color: var(--color-1);
 }
 
 div.session-info span.session-id:hover button.copy-button {
 	cursor: pointer;
-	color: lightblue;
+	color: var(--color-1);
 }

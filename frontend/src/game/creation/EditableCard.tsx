@@ -16,7 +16,7 @@ function EditableCard({ index, value, onChange, onRemove }) {
 
 	return (
 		<div className="editable-card">
-			<div className="input-card">
+			<div className="card input-card">
 				<input type="text" value={value} onChange={onChangeHandler} />
 			</div>
 			<button className="remove-button" onClick={onRemoveHandler}>
