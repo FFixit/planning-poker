@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import "./StartPage.css";
 
-function StartPage(props) {
+function StartPage() {
 	return (
 		<div className="start-page">
 			<h1>Planning Poker</h1>

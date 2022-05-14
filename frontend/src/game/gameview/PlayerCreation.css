@@ -1,32 +1,42 @@
-form.player-creation {
+div.player-creation {
+	font-size: 2rem;
+	height: 100%;
 	width: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
 }
 
-form.player-creation {
+div.player-creation > form.player-creation-form {
+	width: 25%;
 	display: flex;
 	flex-direction: column;
 }
 
-form.player-creation > label {
+div.player-creation > form.player-creation-form > label {
 	width: 100%;
 	display: flex;
 	flex-direction: row;
 	flex-wrap: nowrap;
 }
 
-form.player-creation > label > * {
+div.player-creation > form.player-creation-form > label > * {
 	margin: 0;
 	padding: 0;
 	min-width: 0;
 	flex-basis: 100%;
 }
 
-form.player-creation > label > p {
+div.player-creation > form.player-creation-form > label > p {
 	white-space: nowrap;
 	flex-shrink: 2;
 }
 
-form.player-creation input[type="text"] {
+div.player-creation > form.player-creation-form input {
+	font-size: inherit;
+}
+
+div.player-creation > form.player-creation-form input[type="text"] {
 	margin: 0 0 1em 1em;
-	flex-shrink: 1;
 }

@@ -13,8 +13,8 @@ div.start-page {
 
 div.start-page > h1 {
 	margin: 1em 2em;
-    font-size: 2em;
-    text-align: center;
+	font-size: 2em;
+	text-align: center;
 }
 
 div.start-page > div.main {
@@ -25,7 +25,6 @@ div.start-page > div.main {
 }
 
 div.start-page > div.main > div {
-	/* width: 50%; */
 	flex-basis: 100%;
 	flex-shrink: 1;
 	flex-grow: 1;
@@ -67,16 +66,6 @@ div.start-page div.join-session > form input[type="text"] {
 div.start-page a {
 	width: 50%;
 }
-
-/* div.start-page input[type="submit"],
-div.start-page a {
-	color: black;
-	border: none;
-	background: white;
-	border-radius: 0.2em;
-	cursor: pointer;
-	padding: 0.5em;
-} */
 
 div.start-page input[type="submit"]:hover,
 div.start-page a:hover {

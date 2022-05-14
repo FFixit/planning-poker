@@ -2,25 +2,37 @@ import { useState } from "react";
 import "./PlayerCreation.css";
 
 function PlayerCreation({ onPlayerCreation }) {
-	let [name, setName] = useState("Player");
+	const [name, setName] = useState("Player");
+
+	const validate = () => {
+		return typeof name === "string" && name !== "";
+	};
 
 	return (
-		<form className="player-creation"
-			onSubmit={() => {
-				onPlayerCreation(name);
-			}}
-		>
-			<label>
-				Name:
+		<div className="player-creation">
+			<form
+				className="player-creation-form"
+				onSubmit={() => {
+					onPlayerCreation(name);
+				}}
+			>
+				<label>
+					Name:
+					<input
+						type="text"
+						name="name"
+						value={name}
+						onChange={(event) => setName(event.target.value)}
+					/>
+				</label>
 				<input
-					type="text"
-					name="name"
-					value={name}
-					onChange={(event) => setName(event.target.value)}
+					className="button"
+					disabled={!validate()}
+					type="submit"
+					value="Join Game"
 				/>
-			</label>
-			<input type="submit" value="Submit" />
-		</form>
+			</form>
+		</div>
 	);
 }
 

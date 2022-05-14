@@ -44,6 +44,3 @@ div.game-creation div.game-creation-button > button {
 	width: 100%;
 	font-size: 2rem;
 }
-div.game-creation div.game-creation-button > button:hover {
-	background: lightblue;
-}

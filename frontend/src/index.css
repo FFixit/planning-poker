@@ -31,10 +31,23 @@ body {
 	border: none;
 	background: white;
 	border-radius: 0.2em;
-	cursor: pointer;
 	padding: 0.5em;
 	text-decoration: none;
 	text-align: center;
+}
+
+.button:not(:disabled) {
+	cursor: pointer;
+}
+
+.button:not(:disabled):hover {
+	cursor: pointer;
+	background: var(--color-1);
+}
+
+.button:disabled {
+	background: lightgray;
+	color: gray;
 }
 
 .card {

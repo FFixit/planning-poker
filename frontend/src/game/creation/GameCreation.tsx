@@ -24,6 +24,14 @@ function GameCreation() {
 		"☕",
 	]);
 
+	const validate = () => {
+		const isValid =
+			cards.length > 0 &&
+			typeof playerName === "string" &&
+			playerName !== "";
+		return isValid;
+	};
+
 	const createGame = () => {
 		socket.emit("create-game", cards, playerName);
 		socket.on("game-created", (sessionId) => {
@@ -53,6 +61,7 @@ function GameCreation() {
 				<div className="game-creation-button">
 					<button
 						className="button create-button"
+						disabled={!validate()}
 						onClick={createGame}
 					>
 						Create
