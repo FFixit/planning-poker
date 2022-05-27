@@ -1,4 +1,4 @@
-import LoadingDots from "../../misc/LoadingDots";
+import LoadingDots from "../../../misc/LoadingDots";
 import "./GameStats.css";
 
 function GameStats({ gameStats }) {

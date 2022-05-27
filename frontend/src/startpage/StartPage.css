@@ -66,8 +66,3 @@ div.start-page div.join-session > form input[type="text"] {
 div.start-page a {
 	width: 50%;
 }
-
-div.start-page input[type="submit"]:hover,
-div.start-page a:hover {
-	background: lightblue;
-}

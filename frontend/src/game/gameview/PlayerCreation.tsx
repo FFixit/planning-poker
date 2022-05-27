@@ -12,7 +12,8 @@ function PlayerCreation({ onPlayerCreation }) {
 		<div className="player-creation">
 			<form
 				className="player-creation-form"
-				onSubmit={() => {
+				onSubmit={(event) => {
+					event.preventDefault();
 					onPlayerCreation(name);
 				}}
 			>

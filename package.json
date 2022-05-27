@@ -4,7 +4,7 @@
   "description": "",
   "main": " ",
   "scripts": {
-    "dev": "concurrently \"cd backend && npm run dev\" \"cd frontend && npm start\" "
+    "dev": "concurrently \"cd backend && npm run start:dev\" \"cd frontend && npm start\" "
   },
   "author": "Felix Flügel",
   "license": "ISC",

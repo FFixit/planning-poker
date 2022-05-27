@@ -1,58 +1,65 @@
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
 import "./GameView.css";
-import CardSelection from "./CardSelection";
-import OtherPlayers from "./OtherPlayers";
-import GameStats from "./GameStats";
-import SessionInfo from "./SessionInfo";
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import CardSelection from "./components/CardSelection";
+import GameStats from "./components/GameStats";
+import OtherPlayers from "./components/OtherPlayers";
+import SessionInfo from "./components/SessionInfo";
+import { useGameContext } from "./GameOutlet";
+import PlayerCreation from "./PlayerCreation";
 
-function GameView({ socket, playerName, setPlayerName }) {
+function GameView() {
 	const params = useParams();
 	const sessionId = params.sessionId;
 
-	const [gameState, setGameState] = useState({
-		cards: [],
-		players: {},
-		gameStats: null,
-		isRoundFinished: false,
-	});
-
+	const [socketRef, gameState] = useGameContext();
+	const [isJoined, setJoined] = useState(
+		socketRef.current && socketRef.current.id in gameState.players
+	);
 	const [selectedCard, setSelectedCard] = useState(null);
 
 	useEffect(() => {
-		console.log("effect triggered in 'GameView'");
-		socket.emit("join-game", sessionId, playerName);
-
-		socket.on("update-state", (newState) => {
-			console.log("game state updating", newState);
-			setGameState(newState);
-			if (
-				typeof newState.players[socket.id].selectedCard === "undefined"
-			) {
-				setSelectedCard(null);
-			}
-		});
-
+		const socket = socketRef.current;
 		return () => {
-			setPlayerName("");
-			socket.emit("leave-game", sessionId);
+			if (isJoined) {
+				socket.emit("leave-game", { sessionId });
+			}
 		};
-	}, [sessionId, playerName, socket, setPlayerName]);
+	}, [socketRef, sessionId, isJoined]);
+
+	useEffect(() => {
+		const socket = socketRef.current;
+		if (socket) {
+			const ownSelectedCard =
+				gameState.players[socket.id] &&
+				gameState.players[socket.id].selectedCard;
+			if (typeof ownSelectedCard === "undefined") {
+				setSelectedCard(ownSelectedCard);
+			}
+		}
+	}, [socketRef, gameState]);
 
 	const players = Object.entries(gameState.players).filter(
-		([id, player]) => id !== socket.id
+		([id, player]) => id !== socketRef.current.id
 	);
 
-	const selectCard = (index) => {
-		setSelectedCard(index);
-		socket.emit("select-card", sessionId, index);
+	const createPlayer = (playerName: string) => {
+		socketRef.current.emit("join-game", { sessionId, playerName });
+		setJoined(true);
+	};
+
+	const selectCard = (index: number) => {
+		if (!gameState.isRoundFinished) {
+			setSelectedCard(index);
+			socketRef.current.emit("select-card", { sessionId, index });
+		}
 	};
 
 	const nextRound = () => {
-		socket.emit("next-round", sessionId);
+		socketRef.current.emit("next-round", { sessionId });
 	};
 
-	return (
+	return isJoined ? (
 		<div className="game-view">
 			<div className="upper-section">
 				<OtherPlayers players={players} />
@@ -75,6 +82,8 @@ function GameView({ socket, playerName, setPlayerName }) {
 				selectFunction={selectCard}
 			/>
 		</div>
+	) : (
+		<PlayerCreation onPlayerCreation={createPlayer} />
 	);
 }
 

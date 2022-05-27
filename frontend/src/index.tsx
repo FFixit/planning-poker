@@ -1,20 +1,20 @@
+import "./index.css";
 import React from "react";
 import { render } from "react-dom";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import reportWebVitals from "./reportWebVitals";
-import "./index.css";
 import StartPage from "./startpage/StartPage";
 import GameCreation from "./game/creation/GameCreation";
-import Game from "./game/gameview/Game";
-import GameMain from "./game/gameview/GameMain";
+import GameView from "./game/gameview/GameView";
+import GameOutlet from "./game/gameview/GameOutlet";
 
 render(
 	<BrowserRouter>
 		<Routes>
 			<Route path="/" element={<StartPage />} />
-			<Route path="game" element={<GameMain />}>
+			<Route path="game" element={<GameOutlet />}>
 				<Route index element={<GameCreation />} />
-				<Route path=":sessionId" element={<Game />} />
+				<Route path=":sessionId" element={<GameView />} />
 			</Route>
 			<Route
 				path="*"
