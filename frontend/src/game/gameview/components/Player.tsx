@@ -7,7 +7,7 @@ function Player({ name, value }) {
 	if (typeof value === "boolean" && value === true) {
 		displayValue = <p>?</p>;
 		cssClasses.push("value-picked");
-	} else if (typeof value === "number") {
+	} else if (typeof value === "string") {
 		displayValue = <p>{value}</p>;
 	} else {
 		displayValue = <LoadingDots />;

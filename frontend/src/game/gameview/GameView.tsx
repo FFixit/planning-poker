@@ -62,7 +62,7 @@ function GameView() {
 	return isJoined ? (
 		<div className="game-view">
 			<div className="upper-section">
-				<OtherPlayers players={players} />
+				<OtherPlayers cards={gameState.cards} players={players} />
 				<div className="game-control">
 					<SessionInfo sessionId={sessionId} />
 					<GameStats gameStats={gameState.gameStats} />
