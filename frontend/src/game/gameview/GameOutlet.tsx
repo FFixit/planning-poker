@@ -8,6 +8,7 @@ type GameStateType = {
 	cards: string[];
 	isRoundFinished: boolean;
 	gameStats: any;
+	adminId: string;
 	players: { [x: string]: { name: string; selectedCard: number | true } };
 };
 
@@ -20,6 +21,7 @@ function GameOutlet() {
 		cards: [],
 		isRoundFinished: false,
 		gameStats: null,
+		adminId: null,
 		players: {},
 	});
 	const [isConnected, setConnected]: [boolean, Function] = useState(false);

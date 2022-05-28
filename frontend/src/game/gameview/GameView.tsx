@@ -59,21 +59,27 @@ function GameView() {
 		socketRef.current.emit("next-round", { sessionId });
 	};
 
+	const isAdmin = socketRef.current.id === gameState.adminId;
+
 	return isJoined ? (
 		<div className="game-view">
 			<div className="upper-section">
 				<OtherPlayers cards={gameState.cards} players={players} />
 				<div className="game-control">
-					<SessionInfo sessionId={sessionId} />
-					<GameStats gameStats={gameState.gameStats} />
-					<div className="admin-buttons">
-						<button
-							className="button button-next-round"
-							onClick={nextRound}
-						>
-							Next round
-						</button>
+					<div className="stats-container">
+						<SessionInfo sessionId={sessionId} />
+						<GameStats gameStats={gameState.gameStats} />
 					</div>
+					{isAdmin && (
+						<div className="admin-buttons">
+							<button
+								className="button button-next-round"
+								onClick={nextRound}
+							>
+								Next round
+							</button>
+						</div>
+					)}
 				</div>
 			</div>
 			<CardSelection

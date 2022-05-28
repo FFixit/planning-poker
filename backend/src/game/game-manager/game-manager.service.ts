@@ -22,6 +22,7 @@ export class GameManagerService {
         cards: string[];
         isRoundFinished: boolean;
         gameStats: any;
+        adminId: string;
         players: { [x: string]: { name: string; selectedCard: number | true } };
     } {
         const game: GameState = this.getGameOrThrowError(sessionId);
@@ -51,8 +52,10 @@ export class GameManagerService {
         game.selectPlayerCard(clientId, index);
     }
 
-    startNextRound(sessionId: string) {
+    startNextRound(sessionId: string, clientId) {
         const game: GameState = this.getGameOrThrowError(sessionId);
-        game.resetRound();
+        if (clientId === game.getAdmin()) {
+            game.resetRound();
+        }
     }
 }

@@ -85,8 +85,11 @@ export class GameGateway implements OnGatewayConnection {
     }
 
     @SubscribeMessage('next-round')
-    handleNextRound(@MessageBody() { sessionId }: NextRoundDto): void {
-        this.gameManager.startNextRound(sessionId);
+    handleNextRound(
+        @MessageBody() { sessionId }: NextRoundDto,
+        @ConnectedSocket() client: Socket,
+    ): void {
+        this.gameManager.startNextRound(sessionId, client.id);
         this.broadcastState(sessionId);
     }
 }

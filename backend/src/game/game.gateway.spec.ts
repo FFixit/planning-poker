@@ -203,16 +203,20 @@ describe('GameGateway', () => {
 
     describe('handleNextRound', () => {
         const messageBody: NextRoundDto = { sessionId: '123' };
+        const client = {
+            id: 'testId',
+        };
 
         describe('when handleNextRound is called', () => {
             beforeEach(() => {
-                gateway.handleNextRound(messageBody);
+                gateway.handleNextRound(messageBody, client as any);
             });
 
             test('then it should call GameManagerService.startNextRound', () => {
                 expect(gameManagerService.startNextRound).toHaveBeenCalledTimes(1);
                 expect(gameManagerService.startNextRound).toHaveBeenCalledWith(
                     messageBody.sessionId,
+                    client.id,
                 );
             });
             test('then it should call broadcastState', () => {

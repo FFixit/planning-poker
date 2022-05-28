@@ -56,12 +56,14 @@ class GameState {
         cards: string[];
         isRoundFinished: boolean;
         gameStats: any;
+        adminId: string;
         players: { [x: string]: ReturnType<Player['toObject']> };
     } {
         return {
             cards: this.cards,
             isRoundFinished: this.isRoundFinished,
             gameStats: this.gameStats,
+            adminId: this.adminId,
             players: Array.from(this.players).reduce((obj, [key, player]) => {
                 obj[key] = player.toObject(this.isRoundFinished);
                 return obj;
