@@ -1,18 +1,31 @@
+import { GameStage } from '../../../common/types/GameStage';
+import { TGameStateObject } from '../../../common/types/TGameStateObject';
+import { concatWith, interval, Observable, of, Subject } from 'rxjs';
+import { take, map, finalize } from 'rxjs/operators';
 import Player from './Player';
 
-class GameState {
+export default class GameState {
+    private gameStage: GameStage;
     private players: Map<string, Player> = new Map();
     private adminId: string;
     private cards: Array<string> = [];
     private timeCreated: Date;
-    private isRoundFinished = false;
     private gameStats = null;
+    private subject: Subject<TGameStateObject>;
+    private currentTimeLeft: number = null;
 
     constructor(cards: string[], firstPlayerId: string, firstPlayerName: string) {
+        this.gameStage = GameStage.WaitingForPlayers;
         this.cards = cards;
         this.timeCreated = new Date();
-        this.addPlayer(firstPlayerId, firstPlayerName);
-        this.setAdmin(firstPlayerId);
+        this.players.set(firstPlayerId, new Player(firstPlayerName));
+        this.adminId = firstPlayerId;
+        this.subject = new Subject();
+    }
+
+    getGameStateObservable(): Observable<TGameStateObject> {
+        const gameStateObject = this.toObject();
+        return of(gameStateObject).pipe(concatWith(this.subject));
     }
 
     addPlayer(id: string, playerName: string): void {
@@ -20,15 +33,15 @@ class GameState {
             throw new Error('Client already in this game');
         }
         this.players.set(id, new Player(playerName));
+        if (this.gameStage === GameStage.WaitingForPlayers) {
+            this.gameStage = GameStage.WaitingForStart;
+        }
+        this.pushState();
     }
 
     removePlayer(id: string): void {
         this.players.delete(id);
-        this.updateIsRoundFinished();
-    }
-
-    setAdmin(playerId: string): void {
-        this.adminId = playerId;
+        this.pushState();
     }
 
     getAdmin(): string {
@@ -37,47 +50,68 @@ class GameState {
 
     selectPlayerCard(playerId: string, index: number): void {
         this.players.get(playerId).setSelectedCard(index);
-        this.updateIsRoundFinished();
+        this.pushState();
     }
 
     resetRound(): void {
-        for (const [, player] of this.players) {
-            player.setSelectedCard(null);
+        if (
+            this.gameStage === GameStage.WaitingForStart ||
+            this.gameStage === GameStage.RoundFinished
+        ) {
+            for (const [, player] of this.players) {
+                player.setSelectedCard(null);
+            }
+            this.gameStats = null;
+            this.gameStage = GameStage.RoundInProgress;
+            this.pushState();
+            this.startTimer();
         }
-        this.gameStats = null;
-        this.isRoundFinished = false;
     }
 
-    getTimeCreated(): Date {
-        return this.timeCreated;
-    }
-
-    toObject(): {
-        cards: string[];
-        isRoundFinished: boolean;
-        gameStats: any;
-        adminId: string;
-        players: { [x: string]: ReturnType<Player['toObject']> };
-    } {
+    toObject(): TGameStateObject {
+        const isRoundFinished = this.gameStage === GameStage.RoundFinished;
         return {
+            gameStage: this.gameStage,
             cards: this.cards,
-            isRoundFinished: this.isRoundFinished,
             gameStats: this.gameStats,
             adminId: this.adminId,
+            currentTimeLeft: this.currentTimeLeft,
             players: Array.from(this.players).reduce((obj, [key, player]) => {
-                obj[key] = player.toObject(this.isRoundFinished);
+                obj[key] = player.toObject(isRoundFinished);
                 return obj;
             }, {}),
         };
     }
 
-    private updateIsRoundFinished(): void {
-        this.isRoundFinished = Array.from(this.players.values()).every(
-            (player) => typeof player.getSelectedCard() === 'number',
+    private pushState() {
+        const gameStateObject = this.toObject();
+        this.subject.next(gameStateObject);
+    }
+
+    private startTimer() {
+        const INTERVAL = 1000;
+        const LENGTH = 10;
+        const timer$ = interval(INTERVAL).pipe(
+            take(LENGTH + 1),
+            map((interval) => {
+                const secondsLeft = LENGTH - interval;
+                this.currentTimeLeft = secondsLeft;
+                return this.toObject();
+            }),
+            finalize(() => {
+                console.log('timer ended');
+                this.currentTimeLeft = null;
+                this.finishRound();
+            }),
         );
-        if (this.isRoundFinished) {
-            this.calculateGameStats();
-        }
+
+        timer$.subscribe((newState) => this.subject.next(newState));
+    }
+
+    private finishRound() {
+        this.gameStage = GameStage.RoundFinished;
+        this.calculateGameStats();
+        this.pushState();
     }
 
     private calculateGameStats(): void {
@@ -134,5 +168,3 @@ class GameState {
         return [numerics, others];
     }
 }
-
-export default GameState;

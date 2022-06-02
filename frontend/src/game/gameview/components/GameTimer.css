@@ -1,0 +1,6 @@
+div.game-timer {
+	font-size: 2rem;
+}
+div.game-timer span.game-timer-value-critical {
+	color: var(--color-sig);
+}

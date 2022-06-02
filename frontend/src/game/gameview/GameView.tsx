@@ -7,19 +7,45 @@ import OtherPlayers from "./components/OtherPlayers";
 import SessionInfo from "./components/SessionInfo";
 import { useGameContext } from "./GameOutlet";
 import PlayerCreation from "./PlayerCreation";
+import GameTimer from "./components/GameTimer";
+import { GameStage } from "../../common/types/GameStage";
+import { TGameStateObject } from "../../common/types/TGameStateObject";
+import AdminButtons from "./components/AdminButtons";
 
 function GameView() {
 	const params = useParams();
 	const sessionId = params.sessionId;
 
-	const [socketRef, gameState] = useGameContext();
-	const [isJoined, setJoined] = useState(
-		socketRef.current && socketRef.current.id in gameState.players
-	);
+	const [socketRef] = useGameContext();
+
+	const [gameState, setGameState]: [TGameStateObject, Function] = useState({
+		gameStage: GameStage.WaitingForPlayers,
+		cards: [],
+		isRoundFinished: false,
+		gameStats: null,
+		adminId: null,
+		currentTimeLeft: null,
+		players: {},
+	});
+	const [isJoined, setJoined] = useState(false);
 	const [selectedCard, setSelectedCard] = useState(null);
 
 	useEffect(() => {
 		const socket = socketRef.current;
+
+		if (!isJoined) {
+			socket.on("subscribe-game", (newState: TGameStateObject) => {
+				console.log("recieved new game state", newState);
+				console.log(newState.currentTimeLeft);
+				setGameState(newState);
+				setJoined(
+					socketRef.current &&
+						socketRef.current.id in newState.players
+				);
+			});
+			socket.emit("subscribe-game", { sessionId });
+		}
+
 		return () => {
 			if (isJoined) {
 				socket.emit("leave-game", { sessionId });
@@ -49,13 +75,14 @@ function GameView() {
 	};
 
 	const selectCard = (index: number) => {
-		if (!gameState.isRoundFinished) {
-			setSelectedCard(index);
-			socketRef.current.emit("select-card", { sessionId, index });
-		}
+		socketRef.current.emit("select-card", { sessionId, index });
 	};
 
-	const nextRound = () => {
+	const startSession = () => {
+		socketRef.current.emit("next-round", { sessionId });
+	};
+
+	const startNextRound = () => {
 		socketRef.current.emit("next-round", { sessionId });
 	};
 
@@ -68,25 +95,28 @@ function GameView() {
 				<div className="game-control">
 					<div className="stats-container">
 						<SessionInfo sessionId={sessionId} />
+						<GameTimer
+							value={gameState.currentTimeLeft}
+						></GameTimer>
 						<GameStats gameStats={gameState.gameStats} />
 					</div>
 					{isAdmin && (
-						<div className="admin-buttons">
-							<button
-								className="button button-next-round"
-								onClick={nextRound}
-							>
-								Next round
-							</button>
-						</div>
+						<AdminButtons
+							gameStage={gameState.gameStage}
+							startNextRound={startNextRound}
+							startSession={startSession}
+						/>
 					)}
 				</div>
 			</div>
-			<CardSelection
-				cards={gameState.cards}
-				selectedIndex={selectedCard}
-				selectFunction={selectCard}
-			/>
+			<div className="lower-section">
+				<CardSelection
+					gameStage={gameState.gameStage}
+					cards={gameState.cards}
+					selectedIndex={selectedCard}
+					selectFunction={selectCard}
+				/>
+			</div>
 		</div>
 	) : (
 		<PlayerCreation onPlayerCreation={createPlayer} />

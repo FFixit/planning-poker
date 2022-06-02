@@ -1,4 +1,6 @@
+import { TGameStateObject } from '../../common/types/TGameStateObject';
 import { Injectable } from '@nestjs/common';
+import { Observable } from 'rxjs';
 import { GameManagerLib } from './game-manager-lib';
 import GameState from './structures/GameState';
 
@@ -18,16 +20,9 @@ export class GameManagerService {
         return game;
     }
 
-    getStateObject(sessionId: string): {
-        cards: string[];
-        isRoundFinished: boolean;
-        gameStats: any;
-        adminId: string;
-        players: { [x: string]: { name: string; selectedCard: number | true } };
-    } {
+    getGameStateObservable(sessionId: string): Observable<TGameStateObject> {
         const game: GameState = this.getGameOrThrowError(sessionId);
-        const stateObject = game.toObject();
-        return stateObject;
+        return game.getGameStateObservable();
     }
 
     createGameSession(cards: string[], creatorPlayerName: string, clientId: string): string {

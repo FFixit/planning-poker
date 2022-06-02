@@ -1,3 +1,5 @@
+import { TPlayerObject } from '../../../common/types/TPlayerObject';
+
 class Player {
     private name: string;
     private selectedCard: number;
@@ -15,6 +17,13 @@ class Player {
         return this.selectedCard;
     }
 
+    toObject(isRoundFinished: boolean): TPlayerObject {
+        return {
+            name: this.name,
+            selectedCard: this.getMaskedCardValue(isRoundFinished),
+        };
+    }
+
     private getMaskedCardValue(isGameFinished: boolean): number | true {
         if (isGameFinished) {
             return this.selectedCard;
@@ -25,16 +34,6 @@ class Player {
                 return;
             }
         }
-    }
-
-    toObject(isGameFinished: boolean): {
-        name: string;
-        selectedCard: number | true;
-    } {
-        return {
-            name: this.name,
-            selectedCard: this.getMaskedCardValue(isGameFinished),
-        };
     }
 }
 

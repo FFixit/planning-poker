@@ -1,16 +1,31 @@
-import Card from "./Card";
 import "./CardSelection.css";
+import { GameStage } from "../../../common/types/GameStage";
+import Card from "./Card";
 
-function CardSelection(props) {
+type CardSelectionArgs = {
+	gameStage: GameStage;
+	cards: string[];
+	selectedIndex: number;
+	selectFunction: (index: number) => void;
+};
+
+function CardSelection({
+	gameStage,
+	cards,
+	selectedIndex,
+	selectFunction,
+}: CardSelectionArgs) {
+	const areCardsActive = gameStage === GameStage.RoundInProgress;
 	return (
 		<div className="card-selection">
-			{props.cards.map((value, i) => (
+			{cards.map((value, i) => (
 				<Card
 					key={i}
+					active={areCardsActive}
 					value={value}
 					index={i}
-					selected={i === props.selectedIndex}
-					onClick={props.selectFunction}
+					selected={i === selectedIndex}
+					onClick={selectFunction}
 				/>
 			))}
 		</div>

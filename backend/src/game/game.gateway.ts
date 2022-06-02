@@ -1,3 +1,4 @@
+import { TGameStateObject } from '../common/types/TGameStateObject';
 import { UseInterceptors, UsePipes, ValidationPipe } from '@nestjs/common';
 import {
     ConnectedSocket,
@@ -6,7 +7,10 @@ import {
     SubscribeMessage,
     WebSocketGateway,
     WebSocketServer,
+    WsResponse,
 } from '@nestjs/websockets';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { Server, Socket } from 'socket.io';
 import { CreateGameDto } from './dto/create-game.dto';
 import { JoinGameDto } from './dto/join-game.dto';
@@ -33,16 +37,16 @@ export class GameGateway implements OnGatewayConnection {
         client.rooms.forEach((room) => {
             try {
                 this.gameManager.removePlayer(room, client.id);
-                this.broadcastState(room);
+                // this.broadcastState(room);
             } catch (error) {}
         });
         console.log('Client disconnecting:', reason);
     }
 
-    private broadcastState(sessionId: string) {
-        const gameState = this.gameManager.getStateObject(sessionId);
-        this.server.in(sessionId).emit('update-state', gameState);
-    }
+    // private broadcastState(sessionId: string) {
+    //     const gameState = this.gameManager.getStateObject(sessionId);
+    //     this.server.in(sessionId).emit('update-state', gameState);
+    // }
 
     @SubscribeMessage('create-game')
     handleCreateGame(
@@ -51,7 +55,7 @@ export class GameGateway implements OnGatewayConnection {
     ): string {
         const sessionId = this.gameManager.createGameSession(cards, playerName, client.id);
         client.join(sessionId);
-        this.broadcastState(sessionId);
+        // this.broadcastState(sessionId);
         return sessionId;
     }
 
@@ -62,7 +66,16 @@ export class GameGateway implements OnGatewayConnection {
     ): void {
         this.gameManager.addNewPlayer(sessionId, client.id, playerName);
         client.join(sessionId);
-        this.broadcastState(sessionId);
+        // this.broadcastState(sessionId);
+    }
+
+    @SubscribeMessage('subscribe-game')
+    handleSubscribeGame(@MessageBody() { sessionId }): Observable<WsResponse<TGameStateObject>> {
+        const gameStateObservable = this.gameManager.getGameStateObservable(sessionId);
+        return gameStateObservable.pipe(
+            map((gameState) => ({ event: 'subscribe-game', data: gameState })),
+        );
+        // this.broadcastState(sessionId);
     }
 
     @SubscribeMessage('leave-game')
@@ -72,7 +85,7 @@ export class GameGateway implements OnGatewayConnection {
     ): void {
         this.gameManager.removePlayer(sessionId, client.id);
         client.leave(sessionId);
-        this.broadcastState(sessionId);
+        // this.broadcastState(sessionId);
     }
 
     @SubscribeMessage('select-card')
@@ -81,7 +94,7 @@ export class GameGateway implements OnGatewayConnection {
         @ConnectedSocket() client: Socket,
     ): void {
         this.gameManager.setPlayerSelectedCard(sessionId, client.id, index);
-        this.broadcastState(sessionId);
+        // this.broadcastState(sessionId);
     }
 
     @SubscribeMessage('next-round')
@@ -90,6 +103,6 @@ export class GameGateway implements OnGatewayConnection {
         @ConnectedSocket() client: Socket,
     ): void {
         this.gameManager.startNextRound(sessionId, client.id);
-        this.broadcastState(sessionId);
+        // this.broadcastState(sessionId);
     }
 }

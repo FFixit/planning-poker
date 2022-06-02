@@ -8,7 +8,11 @@ div.player-card.selected {
 	transform: scale(1.4);
 }
 
-div.player-card:hover {
+div.player-card.disabled {
+	filter: grayscale(1);
+}
+
+div.player-card:not(.disabled):hover {
 	transform: scale(1.5);
 	cursor: pointer;
 }

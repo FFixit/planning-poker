@@ -1,12 +1,15 @@
 div.game-view {
-	display: flex;
-	flex-direction: column;
 	height: 100%;
-	justify-content: space-between;
+	display: grid;
+	grid-template-rows: 1fr auto;
+	grid-template-areas:
+		"upper"
+		"lower";
+	overflow: hidden;
 }
 
 div.game-view > div.upper-section {
-	flex: 1 1 100%;
+	grid-area: upper;
 	display: grid;
 	grid-template-columns: repeat(3, 1fr);
 	grid-template-areas: "a a b";
@@ -22,6 +25,10 @@ div.game-view > div.upper-section > div.game-stats {
 	grid-area: b;
 }
 
+div.game-view > div.lower-section {
+	grid-area: lower;
+}
+
 div.game-view div.game-control {
 	border-left: 1px solid gray;
 	display: flex;
@@ -34,16 +41,4 @@ div.game-view div.stats-container {
 	flex-direction: column;
 	justify-content: space-around;
 	align-items: center;
-}
-
-div.game-view div.admin-buttons {
-	display: grid;
-	place-items: center;
-	border-top: 1px solid gray;
-	padding: 1em;
-	height: 5em;
-}
-
-div.game-view .button-next-round {
-	font-size: 1rem;
 }

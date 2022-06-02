@@ -1,15 +1,29 @@
 import "./Card.css";
 
-function Card(props) {
-	let className = "card player-card" + (props.selected ? " selected" : "");
+type CardArgs = {
+	active: boolean;
+	value: string;
+	selected: boolean;
+	index: number;
+	onClick: (index: number) => void;
+};
+
+function Card({ active, value, selected, index, onClick }: CardArgs) {
+	let classNames = ["card", "player-card"];
+	if (selected) {
+		classNames.push("selected");
+	}
+	if (!active) {
+		classNames.push("disabled");
+	}
 	return (
 		<div
-			className={className}
+			className={classNames.join(" ")}
 			onClick={() => {
-				props.onClick(props.index);
+				onClick(index);
 			}}
 		>
-			<p>{props.value}</p>
+			<p>{value}</p>
 		</div>
 	);
 }

@@ -4,26 +4,11 @@ import socketio, { Socket } from "socket.io-client";
 import { useEffect, useRef, useState } from "react";
 import LoadingDots from "../../misc/LoadingDots";
 
-type GameStateType = {
-	cards: string[];
-	isRoundFinished: boolean;
-	gameStats: any;
-	adminId: string;
-	players: { [x: string]: { name: string; selectedCard: number | true } };
-};
-
 function GameOutlet() {
 	const navigate = useNavigate();
 	const refNavigate = useRef(navigate);
 	const refSocket = useRef<Socket>(null);
 
-	const [gameState, setGameState]: [GameStateType, Function] = useState({
-		cards: [],
-		isRoundFinished: false,
-		gameStats: null,
-		adminId: null,
-		players: {},
-	});
 	const [isConnected, setConnected]: [boolean, Function] = useState(false);
 
 	useEffect(() => {
@@ -36,11 +21,6 @@ function GameOutlet() {
 		});
 		socket.onAnyOutgoing((event, data) => {
 			console.log("+++ Sending WebSocket Event", event, data);
-		});
-
-		socket.on("update-state", (newState) => {
-			console.log("game state updating", newState);
-			setGameState(newState);
 		});
 
 		socket.on("exception", (data) => {
@@ -58,10 +38,10 @@ function GameOutlet() {
 			console.log("GameOutlet Effect: Socket disconnect");
 			socket.disconnect();
 		};
-	}, [refSocket, refNavigate, setGameState]);
+	}, [refSocket, refNavigate]);
 
 	if (isConnected) {
-		return <Outlet context={[refSocket, gameState]} />;
+		return <Outlet context={[refSocket]} />;
 	} else {
 		return <LoadingDots />;
 	}
@@ -69,7 +49,7 @@ function GameOutlet() {
 
 export default GameOutlet;
 
-type ContextType = [React.MutableRefObject<Socket>, GameStateType];
+type ContextType = [React.MutableRefObject<Socket>];
 
 export function useGameContext() {
 	return useOutletContext<ContextType>();
