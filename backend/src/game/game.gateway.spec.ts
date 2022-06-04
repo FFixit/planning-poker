@@ -6,6 +6,10 @@ import { NextRoundDto } from './dto/next-round.dto';
 import { LeaveGameDto } from './dto/leave-game.dto';
 import { JoinGameDto } from './dto/join-game.dto';
 import { CreateGameDto } from './dto/create-game.dto';
+import { SubscribeGameDto } from './dto/subscribe-game.dto';
+import { WsResponse } from '@nestjs/websockets';
+import { Observable } from 'rxjs';
+import { TGameStateObject } from 'src/common/types/TGameStateObject';
 
 jest.mock('./game-manager/game-manager.service');
 
@@ -13,13 +17,7 @@ describe('GameGateway', () => {
     let gateway: GameGateway;
     let gameManagerService: GameManagerService;
 
-    let broadcastState: jest.SpyInstance;
-
     beforeEach(async () => {
-        broadcastState = jest
-            .spyOn(GameGateway.prototype as any, 'broadcastState')
-            .mockImplementation(() => undefined);
-
         const module: TestingModule = await Test.createTestingModule({
             providers: [GameGateway, GameManagerService],
         }).compile();
@@ -69,10 +67,6 @@ describe('GameGateway', () => {
                 expect(removePlayerMock).nthCalledWith(1, Array.from(client.rooms)[0], client.id);
                 expect(removePlayerMock).nthCalledWith(2, Array.from(client.rooms)[1], client.id);
             });
-
-            test('then it should call broadcastState', () => {
-                expect(broadcastState).toHaveBeenCalledTimes(2);
-            });
         });
     });
 
@@ -82,7 +76,6 @@ describe('GameGateway', () => {
         const playerName = 'Player123';
         const messageBody: CreateGameDto = { cards, playerName };
         const client = {
-            join: jest.fn(),
             id: 'testId',
         };
 
@@ -100,13 +93,6 @@ describe('GameGateway', () => {
                 expect(createGameSessionMock).toHaveBeenCalledTimes(1);
                 expect(createGameSessionMock).toHaveBeenCalledWith(cards, playerName, client.id);
             });
-            test('then it should call Socket.join', () => {
-                expect(client.join).toHaveBeenCalledTimes(1);
-                expect(client.join).toHaveBeenCalledWith(sessionId);
-            });
-            test('then it should call broadcastState', () => {
-                expect(broadcastState).toHaveBeenCalledTimes(1);
-            });
             test('then it should return sessionId', () => {
                 expect(result).toBe(sessionId);
             });
@@ -118,7 +104,6 @@ describe('GameGateway', () => {
         const playerName = 'Player123';
         const messageBody: JoinGameDto = { sessionId, playerName };
         const client = {
-            join: jest.fn(),
             id: 'testId',
         };
 
@@ -135,12 +120,24 @@ describe('GameGateway', () => {
                     playerName,
                 );
             });
-            test('then it should call Socket.join', () => {
-                expect(client.join).toHaveBeenCalledTimes(1);
-                expect(client.join).toHaveBeenCalledWith(messageBody.sessionId);
+        });
+    });
+
+    describe('handleSubscribeGame', () => {
+        const sessionId = '123';
+        const messageBody: SubscribeGameDto = { sessionId };
+
+        describe('when handleSubscribeGame is called', () => {
+            let result: Observable<WsResponse<TGameStateObject>>;
+            beforeEach(() => {
+                result = gateway.handleSubscribeGame(messageBody);
             });
-            test('then it should call broadcastState', () => {
-                expect(broadcastState).toHaveBeenCalledTimes(1);
+
+            test('then it should call GameManagerService.getGameStateObservable', () => {
+                expect(gameManagerService.getGameStateObservable).toHaveBeenCalledTimes(1);
+            });
+            test('then it should return an Observable', () => {
+                expect(result).toBeInstanceOf(Observable);
             });
         });
     });
@@ -149,7 +146,6 @@ describe('GameGateway', () => {
         const sessionId = '123';
         const messageBody: LeaveGameDto = { sessionId };
         const client = {
-            leave: jest.fn(),
             id: 'testId',
         };
 
@@ -164,13 +160,6 @@ describe('GameGateway', () => {
                     messageBody.sessionId,
                     client.id,
                 );
-            });
-            test('then it should call Socket.leave', () => {
-                expect(client.leave).toHaveBeenCalledTimes(1);
-                expect(client.leave).toHaveBeenCalledWith(messageBody.sessionId);
-            });
-            test('then it should call broadcastState', () => {
-                expect(broadcastState).toHaveBeenCalledTimes(1);
             });
         });
     });
@@ -195,9 +184,6 @@ describe('GameGateway', () => {
                     messageBody.index,
                 );
             });
-            test('then it should call broadcastState', () => {
-                expect(broadcastState).toHaveBeenCalledTimes(1);
-            });
         });
     });
 
@@ -218,9 +204,6 @@ describe('GameGateway', () => {
                     messageBody.sessionId,
                     client.id,
                 );
-            });
-            test('then it should call broadcastState', () => {
-                expect(broadcastState).toHaveBeenCalledTimes(1);
             });
         });
     });

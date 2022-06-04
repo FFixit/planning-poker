@@ -19,6 +19,7 @@ import { NextRoundDto } from './dto/next-round.dto';
 import { SelectCardDto } from './dto/select-card.dto';
 import { GameManagerService } from './game-manager/game-manager.service';
 import { LogInterceptor } from './log.interceptor';
+import { SubscribeGameDto } from './dto/subscribe-game.dto';
 
 @WebSocketGateway({ cors: { origin: '*' } })
 @UsePipes(new ValidationPipe({ transform: true }))
@@ -37,16 +38,10 @@ export class GameGateway implements OnGatewayConnection {
         client.rooms.forEach((room) => {
             try {
                 this.gameManager.removePlayer(room, client.id);
-                // this.broadcastState(room);
             } catch (error) {}
         });
         console.log('Client disconnecting:', reason);
     }
-
-    // private broadcastState(sessionId: string) {
-    //     const gameState = this.gameManager.getStateObject(sessionId);
-    //     this.server.in(sessionId).emit('update-state', gameState);
-    // }
 
     @SubscribeMessage('create-game')
     handleCreateGame(
@@ -54,8 +49,6 @@ export class GameGateway implements OnGatewayConnection {
         @ConnectedSocket() client: Socket,
     ): string {
         const sessionId = this.gameManager.createGameSession(cards, playerName, client.id);
-        client.join(sessionId);
-        // this.broadcastState(sessionId);
         return sessionId;
     }
 
@@ -65,17 +58,16 @@ export class GameGateway implements OnGatewayConnection {
         @ConnectedSocket() client: Socket,
     ): void {
         this.gameManager.addNewPlayer(sessionId, client.id, playerName);
-        client.join(sessionId);
-        // this.broadcastState(sessionId);
     }
 
     @SubscribeMessage('subscribe-game')
-    handleSubscribeGame(@MessageBody() { sessionId }): Observable<WsResponse<TGameStateObject>> {
+    handleSubscribeGame(
+        @MessageBody() { sessionId }: SubscribeGameDto,
+    ): Observable<WsResponse<TGameStateObject>> {
         const gameStateObservable = this.gameManager.getGameStateObservable(sessionId);
         return gameStateObservable.pipe(
             map((gameState) => ({ event: 'subscribe-game', data: gameState })),
         );
-        // this.broadcastState(sessionId);
     }
 
     @SubscribeMessage('leave-game')
@@ -84,8 +76,6 @@ export class GameGateway implements OnGatewayConnection {
         @ConnectedSocket() client: Socket,
     ): void {
         this.gameManager.removePlayer(sessionId, client.id);
-        client.leave(sessionId);
-        // this.broadcastState(sessionId);
     }
 
     @SubscribeMessage('select-card')
@@ -94,7 +84,6 @@ export class GameGateway implements OnGatewayConnection {
         @ConnectedSocket() client: Socket,
     ): void {
         this.gameManager.setPlayerSelectedCard(sessionId, client.id, index);
-        // this.broadcastState(sessionId);
     }
 
     @SubscribeMessage('next-round')
@@ -103,6 +92,5 @@ export class GameGateway implements OnGatewayConnection {
         @ConnectedSocket() client: Socket,
     ): void {
         this.gameManager.startNextRound(sessionId, client.id);
-        // this.broadcastState(sessionId);
     }
 }
