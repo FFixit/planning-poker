@@ -1,36 +1,45 @@
 div.game-view {
+	display: flex;
+	flex-direction: column;
 	height: 100%;
-	display: grid;
-	grid-template-rows: 1fr auto;
-	grid-template-areas:
-		"upper"
-		"lower";
+	width: 100%;
 	overflow: hidden;
+	transition: height 0.5s ease 0.5s;
+}
+
+div.game-view.waiting {
+	height: calc(100% + 16rem);
 }
 
 div.game-view > div.upper-section {
-	grid-area: upper;
-	display: grid;
-	grid-template-columns: repeat(3, 1fr);
-	grid-template-areas: "a a b";
-	align-items: stretch;
+	flex-basis: 100%;
+	display: flex;
+	height: 100%;
+	width: 100%;
+	transition: width 0.5s ease;
 	border-bottom: 1px solid gray;
 }
 
-div.game-view > div.upper-section > div.other-players {
-	grid-area: a;
+div.game-view.waiting > div.upper-section {
+	width: calc(133%);
 }
 
-div.game-view > div.upper-section > div.game-stats {
-	grid-area: b;
+div.game-view > div.upper-section > div.other-players {
+	flex-basis: 100%;
 }
 
 div.game-view > div.lower-section {
-	grid-area: lower;
+	max-height: 16rem;
 }
 
 div.game-view div.game-control {
+	flex-grow: 1;
+	flex-shrink: 1;
+	max-width: 33vw;
+	min-width: 33vw;
+	width: 33vw;
 	border-left: 1px solid gray;
+	box-sizing: border-box;
 	display: flex;
 	flex-direction: column;
 }
@@ -42,3 +51,28 @@ div.game-view div.stats-container {
 	justify-content: space-around;
 	align-items: center;
 }
+
+/* 
+
+body, html{
+	margin:0;
+	height:100%;
+	width:100%;
+	overflow:hidden;
+  }
+  
+
+  
+
+  
+
+  
+   @keyframes test {
+	from {
+	   width:133vw;
+	}
+	
+	to {
+		width:100vw;
+	}
+  }  */

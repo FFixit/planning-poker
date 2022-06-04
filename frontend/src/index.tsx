@@ -5,7 +5,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import reportWebVitals from "./reportWebVitals";
 import StartPage from "./startpage/StartPage";
 import GameCreation from "./game/creation/GameCreation";
-import GameView from "./game/gameview/GameView";
+import GamePage from "./game/gameview/GamePage";
 import GameOutlet from "./game/gameview/GameOutlet";
 
 render(
@@ -14,7 +14,7 @@ render(
 			<Route path="/" element={<StartPage />} />
 			<Route path="game" element={<GameOutlet />}>
 				<Route index element={<GameCreation />} />
-				<Route path=":sessionId" element={<GameView />} />
+				<Route path=":sessionId" element={<GamePage />} />
 			</Route>
 			<Route
 				path="*"

@@ -1,103 +1,55 @@
 import "./GameView.css";
-import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
 import CardSelection from "./components/CardSelection";
 import GameStats from "./components/GameStats";
 import OtherPlayers from "./components/OtherPlayers";
 import SessionInfo from "./components/SessionInfo";
-import { useGameContext } from "./GameOutlet";
-import PlayerCreation from "./PlayerCreation";
 import GameTimer from "./components/GameTimer";
 import { GameStage } from "../../common/types/GameStage";
 import { TGameStateObject } from "../../common/types/TGameStateObject";
 import AdminButtons from "./components/AdminButtons";
 
-function GameView() {
-	const params = useParams();
-	const sessionId = params.sessionId;
+type GameViewArgs = {
+	sessionId: string;
+	gameState: TGameStateObject;
+	ownId: string;
+	selectCard: (index: number) => void;
+	startSession: () => void;
+	startNextRound: () => void;
+};
 
-	const [socketRef] = useGameContext();
-
-	const [gameState, setGameState]: [TGameStateObject, Function] = useState({
-		gameStage: GameStage.WaitingForPlayers,
-		cards: [],
-		isRoundFinished: false,
-		gameStats: null,
-		adminId: null,
-		currentTimeLeft: null,
-		players: {},
-	});
-	const [isJoined, setJoined] = useState(false);
-	const [selectedCard, setSelectedCard] = useState(null);
-
-	useEffect(() => {
-		const socket = socketRef.current;
-
-		if (!isJoined) {
-			socket.on("subscribe-game", (newState: TGameStateObject) => {
-				console.log("recieved new game state", newState);
-				console.log(newState.currentTimeLeft);
-				setGameState(newState);
-				setJoined(
-					socketRef.current &&
-						socketRef.current.id in newState.players
-				);
-			});
-			socket.emit("subscribe-game", { sessionId });
-		}
-
-		return () => {
-			if (isJoined) {
-				socket.emit("leave-game", { sessionId });
-			}
-		};
-	}, [socketRef, sessionId, isJoined]);
-
-	useEffect(() => {
-		const socket = socketRef.current;
-		if (socket) {
-			const ownSelectedCard =
-				gameState.players[socket.id] &&
-				gameState.players[socket.id].selectedCard;
-			if (typeof ownSelectedCard === "undefined") {
-				setSelectedCard(ownSelectedCard);
-			}
-		}
-	}, [socketRef, gameState]);
-
+function GameView({
+	sessionId,
+	gameState,
+	ownId,
+	selectCard,
+	startSession,
+	startNextRound,
+}: GameViewArgs) {
 	const players = Object.entries(gameState.players).filter(
-		([id, player]) => id !== socketRef.current.id
+		([id, player]) => id !== ownId
 	);
 
-	const createPlayer = (playerName: string) => {
-		socketRef.current.emit("join-game", { sessionId, playerName });
-		setJoined(true);
-	};
+	const isAdmin = ownId === gameState.adminId;
+	const isWaitingForPlayers =
+		gameState.gameStage === GameStage.WaitingForPlayers;
+	const ownSelectedCard = gameState.players[ownId]?.selectedCard;
+	const ownSelctedIndex =
+		typeof ownSelectedCard === "number" ? ownSelectedCard : null;
 
-	const selectCard = (index: number) => {
-		socketRef.current.emit("select-card", { sessionId, index });
-	};
+	const gameViewClasses = ["game-view"];
 
-	const startSession = () => {
-		socketRef.current.emit("next-round", { sessionId });
-	};
+	if (isWaitingForPlayers) {
+		gameViewClasses.push("waiting");
+	}
 
-	const startNextRound = () => {
-		socketRef.current.emit("next-round", { sessionId });
-	};
-
-	const isAdmin = socketRef.current.id === gameState.adminId;
-
-	return isJoined ? (
-		<div className="game-view">
+	return (
+		<div className={gameViewClasses.join(" ")}>
 			<div className="upper-section">
 				<OtherPlayers cards={gameState.cards} players={players} />
 				<div className="game-control">
 					<div className="stats-container">
 						<SessionInfo sessionId={sessionId} />
-						<GameTimer
-							value={gameState.currentTimeLeft}
-						></GameTimer>
+						<GameTimer value={gameState.currentTimeLeft} />
 						<GameStats gameStats={gameState.gameStats} />
 					</div>
 					{isAdmin && (
@@ -113,13 +65,11 @@ function GameView() {
 				<CardSelection
 					gameStage={gameState.gameStage}
 					cards={gameState.cards}
-					selectedIndex={selectedCard}
+					selectedIndex={ownSelctedIndex}
 					selectFunction={selectCard}
 				/>
 			</div>
 		</div>
-	) : (
-		<PlayerCreation onPlayerCreation={createPlayer} />
 	);
 }
 
