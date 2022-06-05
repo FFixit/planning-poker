@@ -49,8 +49,10 @@ export default class GameState {
     }
 
     selectPlayerCard(playerId: string, index: number): void {
-        this.players.get(playerId).setSelectedCard(index);
-        this.pushState();
+        if (this.gameStage === GameStage.RoundInProgress) {
+            this.players.get(playerId).setSelectedCard(index);
+            this.pushState();
+        }
     }
 
     resetRound(): void {

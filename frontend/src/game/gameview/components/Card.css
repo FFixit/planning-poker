@@ -20,6 +20,4 @@ div.player-card:not(.disabled):hover {
 div.player-card > p {
 	margin: 0;
 	padding: 0;
-	text-align: center;
-	/* filter: grayscale(1); */
 }

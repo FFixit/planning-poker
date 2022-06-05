@@ -1,7 +1,7 @@
 import "./GameView.css";
 import CardSelection from "./components/CardSelection";
 import GameStats from "./components/GameStats";
-import OtherPlayers from "./components/OtherPlayers";
+import AllPlayers from "./components/AllPlayers";
 import SessionInfo from "./components/SessionInfo";
 import GameTimer from "./components/GameTimer";
 import { GameStage } from "../../common/types/GameStage";
@@ -25,10 +25,6 @@ function GameView({
 	startSession,
 	startNextRound,
 }: GameViewArgs) {
-	const players = Object.entries(gameState.players).filter(
-		([id, player]) => id !== ownId
-	);
-
 	const isAdmin = ownId === gameState.adminId;
 	const isWaitingForPlayers =
 		gameState.gameStage === GameStage.WaitingForPlayers;
@@ -45,7 +41,12 @@ function GameView({
 	return (
 		<div className={gameViewClasses.join(" ")}>
 			<div className="upper-section">
-				<OtherPlayers cards={gameState.cards} players={players} />
+				<AllPlayers
+					gameStage={gameState.gameStage}
+					cards={gameState.cards}
+					players={gameState.players}
+					ownId={ownId}
+				/>
 				<div className="game-control">
 					<div className="stats-container">
 						<SessionInfo sessionId={sessionId} />

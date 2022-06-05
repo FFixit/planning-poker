@@ -50,12 +50,15 @@ function GamePage() {
 	}, [socketRef, sessionId, isJoined]);
 
 	const createPlayer = (playerName: string) => {
-		socketRef.current.emit("join-game", { sessionId, playerName });
-		setJoined(true);
+		socketRef.current.emit("join-game", { sessionId, playerName }, () => {
+			setJoined(true);
+		});
 	};
 
 	const selectCard = (index: number) => {
-		socketRef.current.emit("select-card", { sessionId, index });
+		if (gameState.gameStage === GameStage.RoundInProgress) {
+			socketRef.current.emit("select-card", { sessionId, index });
+		}
 	};
 
 	const startSession = () => {

@@ -6,8 +6,13 @@ div.player {
 	width: 5em;
 }
 
-div.player > div.other-player-card {
+div.player > div.card {
 	height: 3em;
+}
+
+div.player > div.self-player-card > p {
+	font-size: 80%;
+	margin: 0;
 }
 
 div.player > div.other-player-card.value-picked {
