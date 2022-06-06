@@ -7,6 +7,7 @@ import GameTimer from "./components/GameTimer";
 import { GameStage } from "../../common/types/GameStage";
 import { TGameStateObject } from "../../common/types/TGameStateObject";
 import AdminButtons from "./components/AdminButtons";
+import { useEffect, useState } from "react";
 
 type GameViewArgs = {
 	sessionId: string;
@@ -25,18 +26,28 @@ function GameView({
 	startSession,
 	startNextRound,
 }: GameViewArgs) {
+	const [selectedCard, setSelectedCard] = useState(null);
+
+	useEffect(() => {
+		if (gameState.gameStage === GameStage.RoundInProgress) {
+			setSelectedCard(null);
+		}
+	}, [gameState.gameStage]);
+
 	const isAdmin = ownId === gameState.adminId;
 	const isWaitingForPlayers =
 		gameState.gameStage === GameStage.WaitingForPlayers;
-	const ownSelectedCard = gameState.players[ownId]?.selectedCard;
-	const ownSelctedIndex =
-		typeof ownSelectedCard === "number" ? ownSelectedCard : null;
 
 	const gameViewClasses = ["game-view"];
 
 	if (isWaitingForPlayers) {
 		gameViewClasses.push("waiting");
 	}
+
+	const selectFunction = (index) => {
+		setSelectedCard(index);
+		selectCard(index);
+	};
 
 	return (
 		<div className={gameViewClasses.join(" ")}>
@@ -46,6 +57,7 @@ function GameView({
 					cards={gameState.cards}
 					players={gameState.players}
 					ownId={ownId}
+					ownSelectedCard={selectedCard}
 				/>
 				<div className="game-control">
 					<div className="stats-container">
@@ -66,8 +78,8 @@ function GameView({
 				<CardSelection
 					gameStage={gameState.gameStage}
 					cards={gameState.cards}
-					selectedIndex={ownSelctedIndex}
-					selectFunction={selectCard}
+					selectedIndex={selectedCard}
+					selectFunction={selectFunction}
 				/>
 			</div>
 		</div>

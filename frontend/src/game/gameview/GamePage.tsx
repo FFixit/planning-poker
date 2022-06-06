@@ -33,10 +33,7 @@ function GamePage() {
 				console.log("recieved new game state", newState);
 				console.log(newState.currentTimeLeft);
 				setGameState(newState);
-				setJoined(
-					socketRef.current &&
-						socketRef.current.id in newState.players
-				);
+				setJoined(socket && socket.id in newState.players);
 				setLoading(false);
 			});
 			socket.emit("subscribe-game", { sessionId });
@@ -44,10 +41,13 @@ function GamePage() {
 
 		return () => {
 			if (isJoined) {
+				socket.removeListener("subscribe-game");
 				socket.emit("leave-game", { sessionId });
 			}
 		};
 	}, [socketRef, sessionId, isJoined]);
+
+
 
 	const createPlayer = (playerName: string) => {
 		socketRef.current.emit("join-game", { sessionId, playerName }, () => {

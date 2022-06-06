@@ -9,6 +9,7 @@ type AllPlayersArgs = {
 	cards: string[];
 	players: { [id: string]: TPlayerObject };
 	ownId: string;
+	ownSelectedCard: number;
 };
 
 export default function AllPlayers({
@@ -16,6 +17,7 @@ export default function AllPlayers({
 	cards,
 	players,
 	ownId,
+	ownSelectedCard,
 }: AllPlayersArgs) {
 	const self = players[ownId];
 
@@ -31,7 +33,7 @@ export default function AllPlayers({
 				self={true}
 				name={self.name}
 				cards={cards}
-				selected={self.selectedCard}
+				selected={ownSelectedCard}
 			/>
 			{others.length > 0 ? (
 				others.map(([id, player]) => {
