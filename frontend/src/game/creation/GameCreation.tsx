@@ -1,14 +1,13 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useGameContext } from "../gameview/GameOutlet";
+import { useSocket } from "../gameview/components/SocketProvider";
 import CardEditor from "./CardEditor";
 import "./GameCreation.css";
 
 function GameCreation() {
 	const navigate = useNavigate();
 
-	const [socketRef] = useGameContext();
-	const socket = socketRef.current;
+	const socket = useSocket();
 
 	const [cards, setCards] = useState([
 		"0",
@@ -35,9 +34,13 @@ function GameCreation() {
 	};
 
 	const createGame = () => {
-		socket.emit("create-game", { cards, playerName }, (sessionId) => {
-			navigate(sessionId);
-		});
+		socket.emit(
+			"create-game",
+			{ cards, playerName },
+			(sessionId: string) => {
+				navigate(sessionId);
+			}
+		);
 	};
 
 	return (

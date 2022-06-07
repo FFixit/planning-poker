@@ -44,6 +44,10 @@ export default class GameState {
         this.pushState();
     }
 
+    hasPlayers(): boolean {
+        return this.players.size > 0;
+    }
+
     getAdmin(): string {
         return this.adminId;
     }

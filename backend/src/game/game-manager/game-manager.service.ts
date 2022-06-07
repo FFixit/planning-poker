@@ -40,6 +40,9 @@ export class GameManagerService {
     removePlayer(sessionId: string, clientId: string): void {
         const game: GameState = this.getGameOrThrowError(sessionId);
         game.removePlayer(clientId);
+        if (!game.hasPlayers()) {
+            this.games.delete(sessionId);
+        }
     }
 
     setPlayerSelectedCard(sessionId: string, clientId: string, index: number) {

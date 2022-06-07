@@ -1,0 +1,26 @@
+div.error-page {
+	height: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+	color: var(--color-err);
+	font-size: 2rem;
+}
+
+div.error-page > p {
+	max-width: 50%;
+}
+
+div.error-page > span.error-icon {
+	font-size: 5rem;
+}
+
+div.error-page button {
+	font-size: 50%;
+}
+
+div.error-page > div.error-buttons {
+	display: flex;
+	gap: 1rem;
+}

@@ -3,6 +3,7 @@
 	--color-1-sat: hsl(199, 100%, 39%);
 	--color-2: hsl(192, 96%, 81%);
 	--color-sig: hsl(0, 86%, 60%);
+	--color-err: red;
 }
 
 html {
