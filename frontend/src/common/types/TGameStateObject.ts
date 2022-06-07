@@ -7,5 +7,6 @@ export type TGameStateObject = {
   gameStats: any;
   adminId: string;
   currentTimeLeft: number;
+  timeCreated: string;
   players: { [x: string]: TPlayerObject };
 };

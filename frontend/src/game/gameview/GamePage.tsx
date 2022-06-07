@@ -20,6 +20,7 @@ function GamePage() {
 		gameStats: null,
 		adminId: null,
 		currentTimeLeft: null,
+		timeCreated: "",
 		players: {},
 	});
 	const [isJoined, setJoined] = useState(false);

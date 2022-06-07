@@ -52,16 +52,21 @@ function GameView({
 	return (
 		<div className={gameViewClasses.join(" ")}>
 			<div className="upper-section">
-				<AllPlayers
-					gameStage={gameState.gameStage}
-					cards={gameState.cards}
-					players={gameState.players}
-					ownId={ownId}
-					ownSelectedCard={selectedCard}
-				/>
+				<div className="main-board">
+					<SessionInfo
+						sessionId={sessionId}
+						timeCreated={gameState.timeCreated}
+					/>
+					<AllPlayers
+						gameStage={gameState.gameStage}
+						cards={gameState.cards}
+						players={gameState.players}
+						ownId={ownId}
+						ownSelectedCard={selectedCard}
+					/>
+				</div>
 				<div className="game-control">
 					<div className="stats-container">
-						<SessionInfo sessionId={sessionId} />
 						<GameTimer value={gameState.currentTimeLeft} />
 						<GameStats gameStats={gameState.gameStats} />
 					</div>

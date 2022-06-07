@@ -24,8 +24,14 @@ div.game-view.waiting > div.upper-section {
 	width: calc(133%);
 }
 
-div.game-view > div.upper-section > div.other-players {
+div.game-view > div.upper-section > div.main-board {
 	flex-basis: 100%;
+	display: flex;
+	flex-direction: column;
+}
+
+div.game-view > div.upper-section > div.main-board > div.other-players {
+	flex-grow: 1;
 }
 
 div.game-view > div.lower-section {

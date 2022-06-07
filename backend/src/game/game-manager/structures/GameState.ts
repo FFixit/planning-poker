@@ -82,6 +82,7 @@ export default class GameState {
             gameStats: this.gameStats,
             adminId: this.adminId,
             currentTimeLeft: this.currentTimeLeft,
+            timeCreated: this.timeCreated.toISOString(),
             players: Array.from(this.players).reduce((obj, [key, player]) => {
                 obj[key] = player.toObject(isRoundFinished);
                 return obj;
