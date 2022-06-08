@@ -4,6 +4,17 @@ div.player {
 	flex-direction: column;
 	align-items: center;
 	width: 5em;
+	animation: grow 1s ease;
+}
+
+@keyframes grow {
+	from{
+		transform: scale(0);
+	}
+
+	to{
+		transform: scale(1);
+	}
 }
 
 div.player > div.card {
@@ -40,13 +51,15 @@ div.player > div.other-player-card.value-picked > p {
 }
 
 div.player > div.player-name {
-	width: 100%;
+	width: 3.5em;
 }
 
 div.player > div.player-name > p {
 	margin: 0;
 	text-align: center;
-	overflow: hidden;
 	text-overflow: ellipsis;
+	overflow: hidden;
 	white-space: nowrap;
 }
+
+

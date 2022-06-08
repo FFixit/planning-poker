@@ -52,11 +52,15 @@ export default function Player({
 		}
 	}
 
+	const cardTooltip = typeof value === "string" ? value : "";
+
 	return (
 		<div className="player">
-			<div className={cssClasses.join(" ")}>{displayValue}</div>
+			<div className={cssClasses.join(" ")} title={cardTooltip}>
+				{displayValue}
+			</div>
 			<div className="player-name">
-				<p>{name}</p>
+				<p title={name}>{name}</p>
 			</div>
 		</div>
 	);

@@ -26,7 +26,7 @@ export default function AllPlayers({
 	);
 
 	return (
-		<div className="other-players">
+		<div className="all-players">
 			<Player
 				key={ownId}
 				gameStage={gameStage}

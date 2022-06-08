@@ -1,5 +1,7 @@
-div.other-players {
+div.all-players {
 	display: flex;
+	flex-wrap: wrap;
+	flex-grow: 1;
 	justify-content: space-evenly;
 	align-items: center;
 	padding: 2rem;
