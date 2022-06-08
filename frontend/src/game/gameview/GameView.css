@@ -4,11 +4,23 @@ div.game-view {
 	height: 100%;
 	width: 100%;
 	overflow: hidden;
-	transition: height 0.5s ease 0.5s;
 }
 
 div.game-view.waiting {
 	height: calc(100% + 16rem);
+}
+
+div.game-view:not(.waiting) {
+	animation: slide-in-vertical 0.5s ease;
+}
+
+@keyframes slide-in-vertical {
+	from {
+		height: calc(100% + 16rem);
+	}
+	to {
+		height: 100%;
+	}
 }
 
 div.game-view > div.upper-section {
@@ -16,12 +28,25 @@ div.game-view > div.upper-section {
 	display: flex;
 	height: 100%;
 	width: 100%;
-	transition: width 0.5s ease;
+	/* transition: width 0.5s ease; */
 	border-bottom: 1px solid gray;
+}
+
+@keyframes slide-in-horizontal {
+	from {
+		width: calc(133%);
+	}
+	to {
+		width: 100%;
+	}
 }
 
 div.game-view.waiting > div.upper-section {
 	width: calc(133%);
+}
+
+div.game-view:not(.waiting) > div.upper-section {
+	animation: slide-in-horizontal 0.5s ease;
 }
 
 div.game-view > div.upper-section > div.main-board {
