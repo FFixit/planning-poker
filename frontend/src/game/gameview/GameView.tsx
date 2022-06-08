@@ -55,7 +55,7 @@ function GameView({
 				<div className="main-board">
 					<SessionInfo
 						sessionId={sessionId}
-						timeCreated={gameState.timeCreated}
+						gameState={gameState}
 					/>
 					<AllPlayers
 						gameStage={gameState.gameStage}
