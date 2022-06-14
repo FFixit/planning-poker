@@ -1,6 +1,10 @@
 import "./GameTimer.css";
 
-export default function GameTimer({ value }) {
+type GameTimerArgs = {
+	value?: number;
+};
+
+export default function GameTimer({ value }: GameTimerArgs) {
 	const hasValue = typeof value === "number";
 
 	if (hasValue) {

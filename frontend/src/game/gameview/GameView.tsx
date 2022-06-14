@@ -26,11 +26,11 @@ function GameView({
 	startSession,
 	startNextRound,
 }: GameViewArgs) {
-	const [selectedCard, setSelectedCard] = useState(null);
+	const [selectedCard, setSelectedCard] = useState<number>(-1);
 
 	useEffect(() => {
 		if (gameState.gameStage === GameStage.RoundInProgress) {
-			setSelectedCard(null);
+			setSelectedCard(-1);
 		}
 	}, [gameState.gameStage]);
 
@@ -44,7 +44,7 @@ function GameView({
 		gameViewClasses.push("waiting");
 	}
 
-	const selectFunction = (index) => {
+	const selectFunction = (index: number) => {
 		setSelectedCard(index);
 		selectCard(index);
 	};
@@ -53,10 +53,7 @@ function GameView({
 		<div className={gameViewClasses.join(" ")}>
 			<div className="upper-section">
 				<div className="main-board">
-					<SessionInfo
-						sessionId={sessionId}
-						gameState={gameState}
-					/>
+					<SessionInfo sessionId={sessionId} gameState={gameState} />
 					<AllPlayers
 						gameStage={gameState.gameStage}
 						cards={gameState.cards}

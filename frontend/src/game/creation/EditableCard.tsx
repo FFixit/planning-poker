@@ -1,7 +1,14 @@
+import { ChangeEvent } from "react";
 import "./EditableCard.css";
 
-function EditableCard({ index, value, onChange, onRemove }) {
-	const onChangeHandler = (event) => {
+type EditableCardArgs = {
+	index: number;
+	value: string;
+	onChange: (index: number, newValue: string) => void;
+	onRemove: (index: number) => void;
+};
+function EditableCard({ index, value, onChange, onRemove }: EditableCardArgs) {
+	const onChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
 		let inputValue = event.target.value;
 		let newValue = isNaN(parseInt(inputValue))
 			? inputValue

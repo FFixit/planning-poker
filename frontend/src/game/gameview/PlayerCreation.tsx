@@ -1,7 +1,11 @@
 import { useState } from "react";
 import "./PlayerCreation.css";
 
-function PlayerCreation({ onPlayerCreation }) {
+type PlayerCreationArgs = {
+	onPlayerCreation: (name: string) => void;
+};
+
+function PlayerCreation({ onPlayerCreation }: PlayerCreationArgs) {
 	const [name, setName] = useState("Player");
 
 	const validate = () => {

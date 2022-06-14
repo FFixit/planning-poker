@@ -4,14 +4,14 @@ import socketio, { Socket } from "socket.io-client";
 import LoadingSpinner from "../../../misc/LoadingSpinner";
 import { useError } from "../error/ErrorProvider";
 
-const SocketContext = React.createContext(undefined);
+const SocketContext = React.createContext<Socket | undefined>(undefined);
 
 type SocketProviderArgs = {};
 
 export function SocketProvider(
 	props: React.PropsWithChildren<SocketProviderArgs>
 ) {
-	const refSocket = useRef<Socket>(null);
+	const refSocket = useRef<Socket | undefined>(undefined);
 	const navigate = useNavigate();
 	const [setError] = useError();
 	const [connected, setConnected] = useState(false);
@@ -38,7 +38,6 @@ export function SocketProvider(
 
 			socket.on("disconnect", () => {
 				console.error("Socket disconnected");
-				// navigate("/");
 			});
 
 			refSocket.current = socket;

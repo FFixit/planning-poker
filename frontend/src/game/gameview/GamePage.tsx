@@ -1,5 +1,5 @@
 import "./GamePage.css";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import PlayerCreation from "./PlayerCreation";
 import { GameStage } from "../../common/types/GameStage";
@@ -10,16 +10,16 @@ import { useSocket } from "./components/SocketProvider";
 
 function GamePage() {
 	const params = useParams();
-	const sessionId = params.sessionId;
+	const sessionId = params.sessionId as string;
 
 	const socket = useSocket();
 
-	const [gameState, setGameState]: [TGameStateObject, Function] = useState({
+	const [gameState, setGameState] = useState<TGameStateObject>({
 		gameStage: GameStage.WaitingForPlayers,
 		cards: [],
-		gameStats: null,
-		adminId: null,
-		currentTimeLeft: null,
+		adminId: "",
+		gameStats: undefined,
+		currentTimeLeft: undefined,
 		timeCreated: "",
 		players: {},
 	});

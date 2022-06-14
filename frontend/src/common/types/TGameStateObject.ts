@@ -4,9 +4,13 @@ import { TPlayerObject } from "./TPlayerObject";
 export type TGameStateObject = {
   gameStage: GameStage;
   cards: string[];
-  gameStats: any;
+  gameStats?: {
+      average?: number;
+      median?: number;
+      others: { key: string; count: number }[];
+  };
   adminId: string;
-  currentTimeLeft: number;
+  currentTimeLeft?: number;
   timeCreated: string;
   players: { [x: string]: TPlayerObject };
 };

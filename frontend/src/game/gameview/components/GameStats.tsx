@@ -1,7 +1,12 @@
+import { TGameStateObject } from "../../../common/types/TGameStateObject";
 import LoadingDots from "../../../misc/LoadingDots";
 import "./GameStats.css";
 
-function GameStats({ gameStats }) {
+type GameStatsArgs = {
+	gameStats: TGameStateObject["gameStats"];
+};
+
+function GameStats({ gameStats }: GameStatsArgs) {
 	const otherStrings =
 		(gameStats &&
 			gameStats.others

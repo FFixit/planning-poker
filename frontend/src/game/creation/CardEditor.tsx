@@ -8,13 +8,13 @@ function CardEditor({
 	cards: string[];
 	setCards: (newCards: string[]) => void;
 }) {
-	const onChangeCard = (index, newValue) => {
+	const onChangeCard = (index: number, newValue: string) => {
 		let newCards = cards.slice();
 		newCards[index] = newValue;
 		setCards(newCards);
 	};
 
-	const onRemoveCard = (index) => {
+	const onRemoveCard = (index: number) => {
 		let newCards = cards.slice();
 		newCards.splice(index, 1);
 		setCards(newCards);

@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import ErrorPage from "./ErrorPage";
 
-const ErrorContext = React.createContext(undefined);
+const ErrorContext = React.createContext<[(error: string) => void] | undefined>(
+	undefined
+);
 
 type ErrorProviderArgs = {};
 
