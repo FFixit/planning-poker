@@ -2,7 +2,7 @@ import { TGameStateObject } from '../../common/types/TGameStateObject';
 import { Injectable } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { GameManagerLib } from './game-manager-lib';
-import GameState from './structures/GameState';
+import GameState from '../structures/GameState';
 
 @Injectable()
 export class GameManagerService {

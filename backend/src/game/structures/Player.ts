@@ -1,4 +1,4 @@
-import { TPlayerObject } from '../../../common/types/TPlayerObject';
+import { TPlayerObject } from '../../common/types/TPlayerObject';
 
 class Player {
     private name: string;

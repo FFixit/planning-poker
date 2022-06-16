@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { GameManagerService } from './game-manager/game-manager.service';
+import { GameManagerService } from './manager/game-manager.service';
 import { GameGateway } from './game.gateway';
 import { SelectCardDto } from './dto/select-card.dto';
 import { NextRoundDto } from './dto/next-round.dto';

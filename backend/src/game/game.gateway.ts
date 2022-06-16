@@ -17,7 +17,7 @@ import { JoinGameDto } from './dto/join-game.dto';
 import { LeaveGameDto } from './dto/leave-game.dto';
 import { NextRoundDto } from './dto/next-round.dto';
 import { SelectCardDto } from './dto/select-card.dto';
-import { GameManagerService } from './game-manager/game-manager.service';
+import { GameManagerService } from './manager/game-manager.service';
 import { LogInterceptor } from './log.interceptor';
 import { SubscribeGameDto } from './dto/subscribe-game.dto';
 

@@ -1,5 +1,5 @@
-import { GameStage } from '../../../common/types/GameStage';
-import { TGameStateObject } from '../../../common/types/TGameStateObject';
+import { GameStage } from '../../common/types/GameStage';
+import { TGameStateObject } from '../../common/types/TGameStateObject';
 import { concatWith, interval, Observable, of, Subject } from 'rxjs';
 import { take, map, finalize } from 'rxjs/operators';
 import Player from './Player';
