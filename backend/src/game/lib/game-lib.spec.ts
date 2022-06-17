@@ -1,15 +1,15 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { GameManagerLib } from './game-manager-lib';
+import { GameLib } from './game-lib';
 
 describe('GameMangerLib', () => {
-    let provider: GameManagerLib;
+    let provider: GameLib;
 
     beforeEach(async () => {
         const module: TestingModule = await Test.createTestingModule({
-            providers: [GameManagerLib],
+            providers: [GameLib],
         }).compile();
 
-        provider = module.get<GameManagerLib>(GameManagerLib);
+        provider = module.get<GameLib>(GameLib);
     });
 
     it('should be defined', () => {

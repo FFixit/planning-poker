@@ -1,57 +1,42 @@
 import { TGameStateObject } from '../../common/types/TGameStateObject';
 import { Injectable } from '@nestjs/common';
 import { Observable } from 'rxjs';
-import { GameManagerLib } from './game-manager-lib';
-import GameState from '../structures/GameState';
+import { GameStoreService } from '../store/game-store.service';
 
 @Injectable()
 export class GameManagerService {
-    constructor(private gameManagerLib: GameManagerLib) {}
-
-    private games: Map<string, GameState> = new Map();
-
-    private getGameOrThrowError(sessionId: string): GameState {
-        const game: GameState = this.games.get(sessionId);
-        if (!game) {
-            throw new Error(
-                'GameManagerService: Game session with ID ' + sessionId + 'does not exist.',
-            );
-        }
-        return game;
-    }
+    constructor(private gameStore: GameStoreService) {}
 
     getGameStateObservable(sessionId: string): Observable<TGameStateObject> {
-        const game: GameState = this.getGameOrThrowError(sessionId);
+        const game = this.gameStore.getSessionOrThrowError(sessionId);
         return game.getGameStateObservable();
     }
 
     createGameSession(cards: string[], creatorPlayerName: string, clientId: string): string {
-        const sessionId = this.gameManagerLib.getNextGameId();
-        const gameState = new GameState(cards, clientId, creatorPlayerName);
-        this.games.set(sessionId, gameState);
+        const sessionId = this.gameStore.createSession(cards, clientId, creatorPlayerName);
         return sessionId;
     }
 
     addNewPlayer(sessionId: string, clientId: string, playerName: string): void {
-        const game: GameState = this.getGameOrThrowError(sessionId);
+        const game = this.gameStore.getSessionOrThrowError(sessionId);
         game.addPlayer(clientId, playerName);
     }
 
     removePlayer(sessionId: string, clientId: string): void {
-        const game: GameState = this.getGameOrThrowError(sessionId);
+        const game = this.gameStore.getSessionOrThrowError(sessionId);
         game.removePlayer(clientId);
         if (!game.hasPlayers()) {
-            this.games.delete(sessionId);
+            this.gameStore.removeSession(sessionId);
         }
     }
 
     setPlayerSelectedCard(sessionId: string, clientId: string, index: number) {
-        const game: GameState = this.getGameOrThrowError(sessionId);
+        const game = this.gameStore.getSessionOrThrowError(sessionId);
         game.selectPlayerCard(clientId, index);
     }
 
     startNextRound(sessionId: string, clientId) {
-        const game: GameState = this.getGameOrThrowError(sessionId);
+        const game = this.gameStore.getSessionOrThrowError(sessionId);
         if (clientId === game.getAdmin()) {
             game.resetRound();
         }

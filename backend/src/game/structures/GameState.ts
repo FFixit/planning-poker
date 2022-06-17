@@ -42,6 +42,9 @@ export default class GameState {
     removePlayer(id: string): void {
         this.players.delete(id);
         this.pushState();
+        if (this.players.size === 0) {
+            this.subject.complete();
+        }
     }
 
     hasPlayers(): boolean {

@@ -1,5 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { GameManagerLib } from './game-manager-lib';
+import { GameLib } from '../lib/game-lib';
+import { GameStoreService } from '../store/game-store.service';
 import { GameManagerService } from './game-manager.service';
 
 describe('GameManagerService', () => {
@@ -7,7 +8,7 @@ describe('GameManagerService', () => {
 
     beforeEach(async () => {
         const module: TestingModule = await Test.createTestingModule({
-            providers: [GameManagerService, GameManagerLib],
+            providers: [GameManagerService, GameStoreService, GameLib],
         }).compile();
 
         service = module.get<GameManagerService>(GameManagerService);

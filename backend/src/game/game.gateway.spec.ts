@@ -11,7 +11,7 @@ import { WsResponse } from '@nestjs/websockets';
 import { Observable } from 'rxjs';
 import { TGameStateObject } from 'src/common/types/TGameStateObject';
 
-jest.mock('./game-manager/game-manager.service');
+jest.mock('./manager/game-manager.service');
 
 describe('GameGateway', () => {
     let gateway: GameGateway;
