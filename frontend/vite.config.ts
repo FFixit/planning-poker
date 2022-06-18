@@ -11,7 +11,7 @@ export default defineConfig({
 		outDir: "build",
 	},
 	plugins: [
-		tscPlugin(),
+		tscPlugin({ tscCommand: "tsc --watch --preserveWatchOutput" }),
 		react(),
 		svgrPlugin({
 			svgrOptions: {
@@ -29,4 +29,5 @@ export default defineConfig({
 			},
 		},
 	},
+	clearScreen: false,
 });
