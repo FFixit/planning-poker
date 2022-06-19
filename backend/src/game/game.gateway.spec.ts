@@ -48,7 +48,6 @@ describe('GameGateway', () => {
 
     describe('handleDisconnecting', () => {
         const client = {
-            rooms: new Set(['room1', 'room2']),
             id: 'testId',
         };
         const reason = 'Test';
@@ -63,9 +62,8 @@ describe('GameGateway', () => {
             });
 
             test('then it should call GameManagerService.removePlayer', () => {
-                expect(removePlayerMock).toHaveBeenCalledTimes(2);
-                expect(removePlayerMock).nthCalledWith(1, Array.from(client.rooms)[0], client.id);
-                expect(removePlayerMock).nthCalledWith(2, Array.from(client.rooms)[1], client.id);
+                expect(removePlayerMock).toHaveBeenCalledTimes(1);
+                expect(removePlayerMock).toHaveBeenCalledWith(client.id);
             });
         });
     });
@@ -154,9 +152,9 @@ describe('GameGateway', () => {
                 gateway.handleLeaveGame(messageBody, client as any);
             });
 
-            test('then it should call GameManagerService.removePlayer', () => {
-                expect(gameManagerService.removePlayer).toHaveBeenCalledTimes(1);
-                expect(gameManagerService.removePlayer).toHaveBeenCalledWith(
+            test('then it should call GameManagerService.removePlayerFromSession', () => {
+                expect(gameManagerService.removePlayerFromSession).toHaveBeenCalledTimes(1);
+                expect(gameManagerService.removePlayerFromSession).toHaveBeenCalledWith(
                     messageBody.sessionId,
                     client.id,
                 );

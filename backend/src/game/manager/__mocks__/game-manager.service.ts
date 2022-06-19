@@ -6,6 +6,7 @@ export const GameManagerService = jest.fn().mockReturnValue({
     getGameStateObservable: jest.fn().mockImplementation(() => new Observable()),
     addNewPlayer: jest.fn(),
     removePlayer: jest.fn(),
+    removePlayerFromSession: jest.fn(),
     setPlayerSelectedCard: jest.fn(),
     startNextRound: jest.fn(),
 });

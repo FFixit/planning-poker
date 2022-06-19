@@ -35,11 +35,7 @@ export class GameGateway implements OnGatewayConnection {
     }
 
     handleDisconnecting(client: Socket, reason: string) {
-        client.rooms.forEach((room) => {
-            try {
-                this.gameManager.removePlayer(room, client.id);
-            } catch (error) {}
-        });
+        this.gameManager.removePlayer(client.id);
         console.log('Client disconnecting:', reason);
     }
 
@@ -75,7 +71,7 @@ export class GameGateway implements OnGatewayConnection {
         @MessageBody() { sessionId }: LeaveGameDto,
         @ConnectedSocket() client: Socket,
     ): void {
-        this.gameManager.removePlayer(sessionId, client.id);
+        this.gameManager.removePlayerFromSession(sessionId, client.id);
     }
 
     @SubscribeMessage('select-card')

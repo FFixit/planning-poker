@@ -22,12 +22,16 @@ export class GameManagerService {
         game.addPlayer(clientId, playerName);
     }
 
-    removePlayer(sessionId: string, clientId: string): void {
+    removePlayerFromSession(sessionId: string, clientId: string): void {
         const game = this.gameStore.getSessionOrThrowError(sessionId);
         game.removePlayer(clientId);
         if (!game.hasPlayers()) {
             this.gameStore.removeSession(sessionId);
         }
+    }
+
+    removePlayer(clientId: string) {
+        //TODO
     }
 
     setPlayerSelectedCard(sessionId: string, clientId: string, index: number) {
