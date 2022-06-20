@@ -11,9 +11,7 @@ export class GameStoreService {
     getSessionOrThrowError(sessionId: string): GameState {
         const game = this.games.get(sessionId);
         if (!game) {
-            throw new Error(
-                'GameManagerService: Game session with ID ' + sessionId + 'does not exist.',
-            );
+            throw Error('GameStoreService: Game session with ID ' + sessionId + 'does not exist.');
         }
         return game;
     }
@@ -27,5 +25,14 @@ export class GameStoreService {
 
     removeSession(sessionId: string) {
         this.games.delete(sessionId);
+    }
+
+    getPlayersCurrentSession(clientId: string) {
+        for (const [key, gameState] of this.games.entries()) {
+            if (gameState.hasPlayer(clientId)) {
+                return key;
+            }
+        }
+        return undefined;
     }
 }

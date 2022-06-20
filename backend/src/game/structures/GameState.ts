@@ -51,6 +51,10 @@ export default class GameState {
         return this.players.size > 0;
     }
 
+    hasPlayer(playerId: string): boolean {
+        return this.players.has(playerId);
+    }
+
     getAdmin(): string {
         return this.adminId;
     }

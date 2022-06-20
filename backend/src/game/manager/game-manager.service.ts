@@ -31,7 +31,12 @@ export class GameManagerService {
     }
 
     removePlayer(clientId: string) {
-        //TODO
+        const sessionId = this.gameStore.getPlayersCurrentSession(clientId);
+        if (!sessionId) {
+            throw Error('GameManagerService: cannot remove player: player not in any game session');
+        }
+
+        this.removePlayerFromSession(sessionId, clientId);
     }
 
     setPlayerSelectedCard(sessionId: string, clientId: string, index: number) {
