@@ -25,6 +25,9 @@ export default function AllPlayers({
 		([id, player]) => id !== ownId
 	);
 
+	const showWaiting =
+		others.length === 0 && gameStage === GameStage.WaitingForPlayers;
+
 	return (
 		<div className="all-players">
 			<Player
@@ -35,7 +38,12 @@ export default function AllPlayers({
 				cards={cards}
 				selected={ownSelectedCard}
 			/>
-			{others.length > 0 ? (
+			{showWaiting ? (
+				<div className="waiting-for-players">
+					<p>Waiting for players</p>
+					<LoadingDots />
+				</div>
+			) : (
 				others.map(([id, player]) => {
 					return (
 						<Player
@@ -47,11 +55,6 @@ export default function AllPlayers({
 						></Player>
 					);
 				})
-			) : (
-				<div className="waiting-for-players">
-					<p>Waiting for players</p>
-					<LoadingDots />
-				</div>
 			)}
 		</div>
 	);
