@@ -4,7 +4,7 @@ class Player {
     private name: string;
     private selectedCard: number;
 
-    constructor(name) {
+    constructor(name: string) {
         this.name = name;
         this.selectedCard = null;
     }
