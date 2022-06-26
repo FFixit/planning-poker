@@ -34,16 +34,18 @@ export default class GameState {
         }
         this.players.set(id, new Player(playerName));
         if (this.gameStage === GameStage.WaitingForPlayers) {
-            this.gameStage = GameStage.WaitingForStart;
+            this.setGameStage(GameStage.WaitingForStart);
         }
         this.pushState();
     }
 
     removePlayer(id: string): void {
-        this.players.delete(id);
-        this.pushState();
-        if (this.players.size === 0) {
-            this.subject.complete();
+        if (this.players.has(id)) {
+            this.players.delete(id);
+            this.pushState();
+            if (this.players.size === 0) {
+                this.subject.complete();
+            }
         }
     }
 
@@ -75,7 +77,7 @@ export default class GameState {
                 player.setSelectedCard(null);
             }
             this.gameStats = null;
-            this.gameStage = GameStage.RoundInProgress;
+            this.setGameStage(GameStage.RoundInProgress);
             this.pushState();
             this.startTimer();
         }
@@ -95,6 +97,27 @@ export default class GameState {
                 return obj;
             }, {}),
         };
+    }
+
+    private setGameStage(newGameStage: GameStage) {
+        const transitionTable = {
+            [GameStage.WaitingForPlayers]: [GameStage.WaitingForStart],
+            [GameStage.WaitingForStart]: [GameStage.RoundInProgress],
+            [GameStage.RoundInProgress]: [GameStage.RoundInProgress, GameStage.RoundFinished],
+            [GameStage.RoundFinished]: [GameStage.RoundInProgress],
+        };
+
+        if (transitionTable[this.gameStage].includes(newGameStage)) {
+            this.gameStage == newGameStage;
+        } else {
+            console.warn(
+                'warning: tried to change gameStage from',
+                this.gameStage,
+                'to',
+                newGameStage,
+                ',but this transition is not allowed.',
+            );
+        }
     }
 
     private pushState() {
