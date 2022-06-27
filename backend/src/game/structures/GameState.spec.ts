@@ -49,10 +49,15 @@ describe('GameMangerLib', () => {
             });
         });
         describe('when addPlayer is called with new id', () => {
-            const mockPushState = jest
+            let mockPushState;
+            let mockSetGameStage;
+            beforeAll(() => {
+                mockPushState = jest
                 .spyOn(GameState.prototype as any, 'pushState')
                 .mockImplementation();
-            const mockSetGameStage = jest.spyOn(GameState.prototype as any, 'setGameStage');
+                mockSetGameStage = jest.spyOn(GameState.prototype as any, 'setGameStage');
+            });
+
             beforeEach(() => {
                 gameState.addPlayer(creatorId + '123', creatorName);
             });
@@ -66,15 +71,25 @@ describe('GameMangerLib', () => {
             test('then it should call pushState', () => {
                 expect(mockPushState).toHaveBeenCalledTimes(1);
             });
+
+            afterAll(() => {
+                mockPushState.mockRestore();
+                mockSetGameStage.mockRestore();
+            });
         });
     });
 
     describe('removePlayer', () => {
         describe('when removePlayer is called with existing id', () => {
-            const mockPushState = jest
+            let mockPushState;
+            let mockComplete;
+            beforeAll(() => {
+                mockPushState = jest
                 .spyOn(GameState.prototype as any, 'pushState')
                 .mockImplementation();
-            const mockComplete = jest.spyOn(Subject.prototype, 'complete').mockImplementation();
+                mockComplete = jest.spyOn(Subject.prototype, 'complete').mockImplementation();
+            });
+
             beforeEach(() => {
                 gameState.removePlayer(creatorId);
             });
@@ -88,11 +103,18 @@ describe('GameMangerLib', () => {
             test('then it should call Subject.complete', () => {
                 expect(mockComplete).toHaveBeenCalledTimes(1);
             });
+
+            afterAll(() => {
+                mockPushState.mockRestore();
+                mockComplete.mockRestore();
+            });
         });
         describe('when removePlayer is called with non existing id', () => {
-            const mockPushState = jest
-                .spyOn(GameState.prototype as any, 'pushState')
-                .mockImplementation();
+            let mockPushState;
+            beforeAll(() => {
+                mockPushState = jest.spyOn(GameState.prototype as any, 'pushState');
+            });
+
             beforeEach(() => {
                 gameState.removePlayer(creatorId + '123');
             });
@@ -102,6 +124,10 @@ describe('GameMangerLib', () => {
             });
             test('then it should not call pushState', () => {
                 expect(mockPushState).not.toHaveBeenCalled();
+            });
+
+            afterAll(() => {
+                mockPushState.mockRestore();
             });
         });
     });
@@ -144,12 +170,17 @@ describe('GameMangerLib', () => {
     });
 
     describe('selectPlayerCard', () => {
-        const mockSetSelectedCard = jest
+        let mockSetSelectedCard;
+        let mockPushState;
+        beforeAll(() => {
+            mockSetSelectedCard = jest
             .spyOn(Player.prototype, 'setSelectedCard')
             .mockImplementation();
-        const mockPushState = jest
+            mockPushState = jest
             .spyOn(GameState.prototype as any, 'pushState')
             .mockImplementation();
+        });
+
         const index = 1;
         describe('when selectPlayerCard is called with gameStage=GameStage.RoundInProgress', () => {
             beforeEach(() => {
@@ -178,21 +209,32 @@ describe('GameMangerLib', () => {
                 expect(mockSetSelectedCard).not.toHaveBeenCalled();
             });
         });
+
+        afterAll(() => {
+            mockSetSelectedCard.mockRestore();
+            mockPushState.mockRestore();
+        });
     });
 
     describe('resetRound', () => {
-        const mockSetSelectedCard = jest
+        let mockSetSelectedCard;
+        let mockPushState;
+        let mockSetGameStage;
+        let mockStartTimer;
+        beforeAll(() => {
+            mockSetSelectedCard = jest
             .spyOn(Player.prototype, 'setSelectedCard')
             .mockImplementation();
-        const mockPushState = jest
+            mockPushState = jest
             .spyOn(GameState.prototype as any, 'pushState')
             .mockImplementation();
-        const mockSetGameStage = jest
+            mockSetGameStage = jest
             .spyOn(GameState.prototype as any, 'setGameStage')
             .mockImplementation();
-        const mockStartTimer = jest
+            mockStartTimer = jest
             .spyOn(GameState.prototype as any, 'startTimer')
             .mockImplementation();
+        });
 
         describe('when resetRound is called with gameStage=GameStage.WaitingForStart', () => {
             beforeEach(() => {
@@ -277,6 +319,13 @@ describe('GameMangerLib', () => {
             test('then it should not call startTimer', () => {
                 expect(mockStartTimer).not.toHaveBeenCalled();
             });
+        });
+
+        afterAll(() => {
+            mockSetSelectedCard.mockRestore();
+            mockPushState.mockRestore();
+            mockSetGameStage.mockRestore();
+            mockStartTimer.mockRestore();
         });
     });
 
