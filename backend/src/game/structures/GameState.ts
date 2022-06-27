@@ -108,7 +108,7 @@ export default class GameState {
         };
 
         if (transitionTable[this.gameStage].includes(newGameStage)) {
-            this.gameStage == newGameStage;
+            this.gameStage = newGameStage;
         } else {
             console.warn(
                 'warning: tried to change gameStage from',
