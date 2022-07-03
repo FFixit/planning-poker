@@ -53,8 +53,8 @@ describe('GameMangerLib', () => {
             let mockSetGameStage;
             beforeAll(() => {
                 mockPushState = jest
-                .spyOn(GameState.prototype as any, 'pushState')
-                .mockImplementation();
+                    .spyOn(GameState.prototype as any, 'pushState')
+                    .mockImplementation();
                 mockSetGameStage = jest.spyOn(GameState.prototype as any, 'setGameStage');
             });
 
@@ -85,8 +85,8 @@ describe('GameMangerLib', () => {
             let mockComplete;
             beforeAll(() => {
                 mockPushState = jest
-                .spyOn(GameState.prototype as any, 'pushState')
-                .mockImplementation();
+                    .spyOn(GameState.prototype as any, 'pushState')
+                    .mockImplementation();
                 mockComplete = jest.spyOn(Subject.prototype, 'complete').mockImplementation();
             });
 
@@ -174,11 +174,11 @@ describe('GameMangerLib', () => {
         let mockPushState;
         beforeAll(() => {
             mockSetSelectedCard = jest
-            .spyOn(Player.prototype, 'setSelectedCard')
-            .mockImplementation();
+                .spyOn(Player.prototype, 'setSelectedCard')
+                .mockImplementation();
             mockPushState = jest
-            .spyOn(GameState.prototype as any, 'pushState')
-            .mockImplementation();
+                .spyOn(GameState.prototype as any, 'pushState')
+                .mockImplementation();
         });
 
         const index = 1;
@@ -223,17 +223,17 @@ describe('GameMangerLib', () => {
         let mockStartTimer;
         beforeAll(() => {
             mockSetSelectedCard = jest
-            .spyOn(Player.prototype, 'setSelectedCard')
-            .mockImplementation();
+                .spyOn(Player.prototype, 'setSelectedCard')
+                .mockImplementation();
             mockPushState = jest
-            .spyOn(GameState.prototype as any, 'pushState')
-            .mockImplementation();
+                .spyOn(GameState.prototype as any, 'pushState')
+                .mockImplementation();
             mockSetGameStage = jest
-            .spyOn(GameState.prototype as any, 'setGameStage')
-            .mockImplementation();
+                .spyOn(GameState.prototype as any, 'setGameStage')
+                .mockImplementation();
             mockStartTimer = jest
-            .spyOn(GameState.prototype as any, 'startTimer')
-            .mockImplementation();
+                .spyOn(GameState.prototype as any, 'startTimer')
+                .mockImplementation();
         });
 
         describe('when resetRound is called with gameStage=GameStage.WaitingForStart', () => {
@@ -353,6 +353,118 @@ describe('GameMangerLib', () => {
 
             test('then it should return the expected Object', () => {
                 expect(returnedValue).toEqual(expect.objectContaining(expecedObject));
+            });
+        });
+    });
+
+    describe('setGameStage', () => {
+        const transitionTable = {
+            [GameStage.WaitingForPlayers]: [GameStage.WaitingForStart],
+            [GameStage.WaitingForStart]: [GameStage.RoundInProgress],
+            [GameStage.RoundInProgress]: [GameStage.RoundInProgress, GameStage.RoundFinished],
+            [GameStage.RoundFinished]: [GameStage.RoundInProgress],
+        };
+        const stages = [
+            GameStage.RoundFinished,
+            GameStage.RoundInProgress,
+            GameStage.WaitingForPlayers,
+            GameStage.WaitingForStart,
+        ];
+        describe('when setGameStage is called', () => {
+            let mockWarn;
+            beforeAll(() => {
+                mockWarn = jest.spyOn(global.console, 'warn').mockImplementation();
+            });
+            for (const currentStage of stages) {
+                for (const newStage of stages) {
+                    ((curr, news) => {
+                        describe('with gameStage=' + curr + ', newGameStage=' + news, () => {
+                            beforeEach(() => {
+                                gameState['gameStage'] = curr;
+                                gameState['setGameStage'].apply(gameState, [news]);
+                            });
+                            test('then it should transition the state according to the transitionTable', () => {
+                                if (transitionTable[curr].includes(news)) {
+                                    expect(gameState['gameStage']).toEqual(news);
+                                } else {
+                                    expect(mockWarn).toHaveBeenCalledTimes(1);
+                                }
+                            });
+                        });
+                    })(currentStage, newStage);
+                }
+            }
+            afterAll(() => {
+                mockWarn.mockRestore();
+            });
+        });
+    });
+
+    describe('pushState', () => {
+        describe('when pushState is called', () => {
+            let mockToObject: jest.SpyInstance<TGameStateObject, []>;
+            let mockSubjectNext: jest.SpyInstance<void, [value: any]>;
+            beforeAll(() => {
+                mockToObject = jest.spyOn(GameState.prototype, 'toObject').mockImplementation();
+                mockSubjectNext = jest.spyOn(Subject.prototype, 'next').mockImplementation();
+            });
+
+            beforeEach(() => {
+                gameState['pushState']();
+            });
+
+            test('then it should call toObject', () => {
+                expect(mockToObject).toHaveBeenCalledTimes(1);
+            });
+            test('then it should call subject.next with the returned object', () => {
+                expect(mockSubjectNext).toHaveBeenCalledTimes(1);
+                expect(mockSubjectNext).toHaveBeenCalledWith(mockToObject.mock.results[0].value);
+            });
+
+            afterAll(() => {
+                mockToObject.mockRestore();
+                mockSubjectNext.mockRestore();
+            });
+        });
+    });
+
+    describe('startTimer', () => {
+        test('it should be defined', () => {
+            expect(gameState['startTimer']).toBeDefined();
+        });
+    });
+
+    describe('finishRound', () => {
+        describe('when finishRound is called', () => {
+            let mockCalculateGameStats;
+            let mockPushState;
+            beforeAll(() => {
+                mockCalculateGameStats = jest
+                    .spyOn(GameState.prototype as any, 'calculateGameStats')
+                    .mockImplementation();
+                mockPushState = jest
+                    .spyOn(GameState.prototype as any, 'pushState')
+                    .mockImplementation();
+            });
+
+            beforeEach(() => {
+                gameState['gameStage'] = GameStage.RoundInProgress;
+                gameState['finishRound']();
+            });
+
+            test('then it should set gameStage to GameStage.RoundFinished', () => {
+                expect(gameState['gameStage']).toEqual(GameStage.RoundFinished);
+            });
+            test('then it should call calculateGameStats', () => {
+                expect(mockCalculateGameStats).toHaveBeenCalledTimes(1);
+            });
+            test('then it should call pushState', () => {
+                expect(mockPushState).toHaveBeenCalledTimes(1);
+            });
+
+            afterAll(() => {
+                mockCalculateGameStats.mockRestore();
+                mockPushState.mockRestore();
             });
         });
     });
