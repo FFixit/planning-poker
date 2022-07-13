@@ -1,12 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { GameLib } from '../lib/game-lib';
+import { LoggerService } from '../logger/logger.service';
 import GameState from '../structures/GameState';
 
 @Injectable()
 export class GameStoreService {
     private games: Map<string, GameState> = new Map();
 
-    constructor(private lib: GameLib) {}
+    constructor(private lib: GameLib, private logger: LoggerService) {}
 
     getSessionOrThrowError(sessionId: string): GameState {
         const game = this.games.get(sessionId);
@@ -18,13 +19,22 @@ export class GameStoreService {
 
     createSession(cards: string[], creatorId: string, creatorPlayerName: string) {
         const sessionId = this.lib.getNextGameId();
+        this.logger.write(
+            'Creating Session',
+            '[' + sessionId + '],',
+            'creator name:',
+            creatorPlayerName,
+        );
         const gameState = new GameState(cards, creatorId, creatorPlayerName);
         this.games.set(sessionId, gameState);
+        this.logger.write('Current number of sessions:', this.games.size);
         return sessionId;
     }
 
     removeSession(sessionId: string) {
+        this.logger.write('Removing Session', '[' + sessionId + ']');
         this.games.delete(sessionId);
+        this.logger.write('Current number of sessions:', this.games.size);
     }
 
     getPlayersCurrentSession(clientId: string) {
