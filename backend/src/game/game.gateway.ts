@@ -1,5 +1,5 @@
 import { TGameStateObject } from '../common/types/TGameStateObject';
-import { UseInterceptors, UsePipes, ValidationPipe } from '@nestjs/common';
+import { UseFilters, UseInterceptors, UsePipes, ValidationPipe } from '@nestjs/common';
 import {
     ConnectedSocket,
     MessageBody,
@@ -20,10 +20,12 @@ import { SelectCardDto } from './dto/select-card.dto';
 import { GameManagerService } from './manager/game-manager.service';
 import { LogInterceptor } from './log.interceptor';
 import { SubscribeGameDto } from './dto/subscribe-game.dto';
+import { AllExceptionsFilter } from './filter/error.filter';
 
-@WebSocketGateway({ cors: { origin: '*' } })
 @UsePipes(new ValidationPipe({ transform: true }))
 @UseInterceptors(new LogInterceptor())
+@UseFilters(new AllExceptionsFilter())
+@WebSocketGateway({ cors: { origin: '*' } })
 export class GameGateway implements OnGatewayConnection {
     constructor(private gameManager: GameManagerService) {}
 
@@ -35,8 +37,12 @@ export class GameGateway implements OnGatewayConnection {
     }
 
     handleDisconnecting(client: Socket, reason: string) {
-        this.gameManager.removePlayer(client.id);
-        console.log('Client disconnecting:', reason);
+        try {
+            console.log('Client disconnecting:', reason);
+            this.gameManager.removePlayer(client.id);
+        } catch (error: any) {
+            console.log(error);
+        }
     }
 
     @SubscribeMessage('create-game')
