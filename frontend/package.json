@@ -48,7 +48,6 @@
 	},
 	"devDependencies": {
 		"@types/react": "^18.0.12",
-		"react-app-rewired": "^2.2.1",
 		"vite-plugin-tsc": "^0.1.1"
 	}
 }
