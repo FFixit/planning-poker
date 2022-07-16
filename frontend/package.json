@@ -25,7 +25,8 @@
 	},
 	"scripts": {
 		"start": "vite",
-		"build": "tsc %% vite build",
+		"prebuild": "tsc --noEmit",
+		"build": "vite build",
 		"preview": "vite preview"
 	},
 	"eslintConfig": {
