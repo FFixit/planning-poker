@@ -84,7 +84,7 @@ describe('GameMangerLib', () => {
 
     describe('getMaskedCardValue', () => {
         describe('when getMaskedCardValue is called with isGameFinished=true', () => {
-            let returnedValue;
+            let returnedValue: number | boolean;
             const selectedCard = 12;
             beforeEach(() => {
                 player['selectedCard'] = selectedCard;
@@ -96,7 +96,7 @@ describe('GameMangerLib', () => {
             });
         });
         describe('when getMaskedCardValue is called with isGameFinished=false, selectedCard!=undefined', () => {
-            let returnedValue;
+            let returnedValue: number | boolean;
             const selectedCard = 12;
             beforeEach(() => {
                 player['selectedCard'] = selectedCard;
@@ -108,7 +108,7 @@ describe('GameMangerLib', () => {
             });
         });
         describe('when getMaskedCardValue is called with isGameFinished=false, selectedCard=undefined', () => {
-            let returnedValue;
+            let returnedValue: number | boolean;
             beforeEach(() => {
                 returnedValue = player['getMaskedCardValue'](false);
             });

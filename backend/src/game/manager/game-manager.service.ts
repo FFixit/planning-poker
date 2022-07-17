@@ -44,7 +44,7 @@ export class GameManagerService {
         game.selectPlayerCard(clientId, index);
     }
 
-    startNextRound(sessionId: string, clientId) {
+    startNextRound(sessionId: string, clientId: string) {
         const game = this.gameStore.getSessionOrThrowError(sessionId);
         if (clientId === game.getAdmin()) {
             game.resetRound();

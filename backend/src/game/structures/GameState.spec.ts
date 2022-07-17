@@ -49,8 +49,8 @@ describe('GameMangerLib', () => {
             });
         });
         describe('when addPlayer is called with new id', () => {
-            let mockPushState;
-            let mockSetGameStage;
+            let mockPushState: jest.SpyInstance;
+            let mockSetGameStage: jest.SpyInstance;
             beforeAll(() => {
                 mockPushState = jest
                     .spyOn(GameState.prototype as any, 'pushState')
@@ -81,8 +81,8 @@ describe('GameMangerLib', () => {
 
     describe('removePlayer', () => {
         describe('when removePlayer is called with existing id', () => {
-            let mockPushState;
-            let mockComplete;
+            let mockPushState: jest.SpyInstance;
+            let mockComplete: jest.SpyInstance;
             beforeAll(() => {
                 mockPushState = jest
                     .spyOn(GameState.prototype as any, 'pushState')
@@ -110,7 +110,7 @@ describe('GameMangerLib', () => {
             });
         });
         describe('when removePlayer is called with non existing id', () => {
-            let mockPushState;
+            let mockPushState: jest.SpyInstance;
             beforeAll(() => {
                 mockPushState = jest.spyOn(GameState.prototype as any, 'pushState');
             });
@@ -170,8 +170,8 @@ describe('GameMangerLib', () => {
     });
 
     describe('selectPlayerCard', () => {
-        let mockSetSelectedCard;
-        let mockPushState;
+        let mockSetSelectedCard: jest.SpyInstance;
+        let mockPushState: jest.SpyInstance;
         beforeAll(() => {
             mockSetSelectedCard = jest
                 .spyOn(Player.prototype, 'setSelectedCard')
@@ -217,10 +217,10 @@ describe('GameMangerLib', () => {
     });
 
     describe('resetRound', () => {
-        let mockSetSelectedCard;
-        let mockPushState;
-        let mockSetGameStage;
-        let mockStartTimer;
+        let mockSetSelectedCard: jest.SpyInstance;
+        let mockPushState: jest.SpyInstance;
+        let mockSetGameStage: jest.SpyInstance;
+        let mockStartTimer: jest.SpyInstance;
         beforeAll(() => {
             mockSetSelectedCard = jest
                 .spyOn(Player.prototype, 'setSelectedCard')
@@ -331,7 +331,7 @@ describe('GameMangerLib', () => {
 
     describe('toObject', () => {
         describe('when toObject is called', () => {
-            const expecedObject = {
+            const expecedObject: TGameStateObject = {
                 adminId: 'testId',
                 cards: ['0', 'abc123', '☕'],
                 currentTimeLeft: null,
@@ -371,7 +371,7 @@ describe('GameMangerLib', () => {
             GameStage.WaitingForStart,
         ];
         describe('when setGameStage is called', () => {
-            let mockWarn;
+            let mockWarn: jest.SpyInstance;
             beforeAll(() => {
                 mockWarn = jest.spyOn(global.console, 'warn').mockImplementation();
             });
@@ -436,8 +436,8 @@ describe('GameMangerLib', () => {
 
     describe('finishRound', () => {
         describe('when finishRound is called', () => {
-            let mockCalculateGameStats;
-            let mockPushState;
+            let mockCalculateGameStats: jest.SpyInstance;
+            let mockPushState: jest.SpyInstance;
             beforeAll(() => {
                 mockCalculateGameStats = jest
                     .spyOn(GameState.prototype as any, 'calculateGameStats')

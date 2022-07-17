@@ -3,6 +3,8 @@ import { TGameStateObject } from '../../common/types/TGameStateObject';
 import { concatWith, interval, Observable, of, Subject } from 'rxjs';
 import { take, map, finalize } from 'rxjs/operators';
 import Player from './Player';
+import { TGameStats } from 'src/common/types/TGameStats';
+import { TPlayerObject } from 'src/common/types/TPlayerObject';
 
 export default class GameState {
     private gameStage: GameStage;
@@ -10,7 +12,7 @@ export default class GameState {
     private adminId: string;
     private cards: Array<string> = [];
     private timeCreated: Date;
-    private gameStats = null;
+    private gameStats: TGameStats = null;
     private subject: Subject<TGameStateObject>;
     private currentTimeLeft: number = null;
 
@@ -95,7 +97,7 @@ export default class GameState {
             players: Array.from(this.players).reduce((obj, [key, player]) => {
                 obj[key] = player.toObject(isRoundFinished);
                 return obj;
-            }, {}),
+            }, {} as { [key: string]: TPlayerObject }),
         };
     }
 
@@ -158,11 +160,13 @@ export default class GameState {
 
         const [numerics, others] = this.splitCards(selectedCards);
 
-        this.gameStats = {
+        const gameStats: TGameStats = {
             average: this.calculateAverage(numerics),
             median: this.calculateMedian(numerics),
             others: this.countStrings(others),
         };
+
+        this.gameStats = gameStats;
     }
 
     private calculateAverage(cards: number[]): number {
@@ -179,7 +183,7 @@ export default class GameState {
     }
 
     private countStrings(strings: string[]): { key: string; count: number }[] {
-        const map = [];
+        const map: { key: string; count: number }[] = [];
 
         const uniqueStrings = [...new Set(strings)];
         uniqueStrings.forEach((key) => {
@@ -193,8 +197,8 @@ export default class GameState {
     }
 
     private splitCards(cards: string[]): [numerics: number[], others: string[]] {
-        const numerics = [];
-        const others = [];
+        const numerics: number[] = [];
+        const others: string[] = [];
         cards.forEach((cardValue) => {
             if (!isNaN(parseFloat(cardValue))) {
                 numerics.push(parseFloat(cardValue));

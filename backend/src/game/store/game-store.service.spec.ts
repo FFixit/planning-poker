@@ -30,8 +30,8 @@ describe('GameStoreService', () => {
         const creatorId = 'testId';
         const creatorName = 'Player123';
         describe('when getSessionOrThrowError is called with existing session', () => {
-            let game;
-            let gameState;
+            let game: GameState;
+            let gameState: GameState;
             beforeEach(() => {
                 gameState = new GameState(cards, creatorId, creatorName);
                 gameStoreService['games'] = new Map();
@@ -45,7 +45,7 @@ describe('GameStoreService', () => {
         });
 
         describe('when getSessionOrThrowError is called with non existant session', () => {
-            let caller;
+            let caller: () => GameState;
             beforeEach(() => {
                 gameStoreService['games'] = new Map();
                 caller = () => gameStoreService.getSessionOrThrowError(mockSessionId);
@@ -63,7 +63,7 @@ describe('GameStoreService', () => {
         const creatorName = 'Player123';
 
         describe('when createSession is called', () => {
-            let sessionId;
+            let sessionId: string;
             beforeEach(() => {
                 gameStoreService['games'] = new Map();
                 sessionId = gameStoreService.createSession(cards, creatorId, creatorName);
@@ -102,7 +102,7 @@ describe('GameStoreService', () => {
         const creatorName = 'Player123';
 
         describe('when getPlayersCurrentSession is called', () => {
-            let sessionId;
+            let sessionId: string;
             beforeEach(() => {
                 const gameState = new GameState(cards, creatorId, creatorName);
                 gameStoreService['games'] = new Map();
