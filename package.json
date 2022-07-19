@@ -5,7 +5,6 @@
   "main": " ",
   "scripts": {
     "dev": "concurrently \"cd backend && npm run start:dev\" \"cd frontend && npm start\" ",
-    "x": "bash -c \"sleep 5\""
   },
   "author": "Felix Flügel",
   "license": "ISC",
