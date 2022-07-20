@@ -3,7 +3,7 @@ import * as LFSR from 'lfsr';
 
 @Injectable()
 export class GameLib {
-    private rng: LFSR;
+    private rng;
 
     constructor() {
         this.rng = new LFSR(28, new Date().getTime());
