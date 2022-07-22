@@ -1,12 +1,14 @@
 import "./index.css";
-import { render } from "react-dom";
+import { createRoot } from "react-dom/client";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import StartPage from "./startpage/StartPage";
 import GameCreation from "./game/creation/GameCreation";
 import GamePage from "./game/gameview/GamePage";
 import GameOutlet from "./game/gameview/GameOutlet";
 
-render(
+const container = document.getElementById("root");
+const root = createRoot(container!);
+root.render(
 	<BrowserRouter>
 		<Routes>
 			<Route path="/" element={<StartPage />} />
@@ -23,6 +25,5 @@ render(
 				}
 			/>
 		</Routes>
-	</BrowserRouter>,
-	document.getElementById("root")
+	</BrowserRouter>
 );
