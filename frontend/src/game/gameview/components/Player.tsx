@@ -1,3 +1,5 @@
+import { faCrown } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { GameStage } from "../../../common/types/GameStage";
 import LoadingDots from "../../../misc/LoadingDots";
 import "./Player.css";
@@ -6,6 +8,7 @@ type PlayerArgs = {
 	gameStage: GameStage;
 	self?: boolean;
 	name: string;
+	isAdmin: boolean;
 	cards: string[];
 	selected: number | true;
 };
@@ -14,6 +17,7 @@ export default function Player({
 	gameStage,
 	self = false,
 	name,
+	isAdmin,
 	cards,
 	selected,
 }: PlayerArgs) {
@@ -56,6 +60,7 @@ export default function Player({
 
 	return (
 		<div className="player">
+			{isAdmin && <FontAwesomeIcon icon={faCrown} />}
 			<div className={cssClasses.join(" ")} title={cardTooltip}>
 				{displayValue}
 			</div>

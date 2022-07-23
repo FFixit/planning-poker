@@ -9,6 +9,7 @@ type AllPlayersArgs = {
 	cards: string[];
 	players: { [id: string]: TPlayerObject };
 	ownId: string;
+	adminId: string;
 	ownSelectedCard: number;
 };
 
@@ -17,6 +18,7 @@ export default function AllPlayers({
 	cards,
 	players,
 	ownId,
+	adminId,
 	ownSelectedCard,
 }: AllPlayersArgs) {
 	const self = players[ownId];
@@ -35,6 +37,7 @@ export default function AllPlayers({
 				gameStage={gameStage}
 				self={true}
 				name={self.name}
+				isAdmin={ownId === adminId}
 				cards={cards}
 				selected={ownSelectedCard}
 			/>
@@ -50,6 +53,7 @@ export default function AllPlayers({
 							key={id}
 							gameStage={gameStage}
 							name={player.name}
+							isAdmin={id === adminId}
 							cards={cards}
 							selected={player.selectedCard}
 						></Player>

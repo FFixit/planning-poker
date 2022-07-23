@@ -59,6 +59,7 @@ function GameView({
 						cards={gameState.cards}
 						players={gameState.players}
 						ownId={ownId}
+						adminId={gameState.adminId}
 						ownSelectedCard={selectedCard}
 					/>
 				</div>
