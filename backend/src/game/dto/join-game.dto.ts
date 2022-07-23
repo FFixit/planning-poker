@@ -1,8 +1,4 @@
-import { IsNotEmpty, IsString } from 'class-validator';
-import { SessionSpecific } from './base/session-specific.dto';
+import { WithPlayerName } from './mixins/with-player-name';
+import { WithSessionId } from './mixins/with-session-id';
 
-export class JoinGameDto extends SessionSpecific {
-    @IsString()
-    @IsNotEmpty()
-    playerName: string;
-}
+export class JoinGameDto extends WithPlayerName(WithSessionId(class Base {})) {}

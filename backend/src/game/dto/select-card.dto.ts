@@ -1,7 +1,7 @@
 import { IsNumber } from 'class-validator';
-import { SessionSpecific } from './base/session-specific.dto';
+import { WithSessionId } from './mixins/with-session-id';
 
-export class SelectCardDto extends SessionSpecific {
+export class SelectCardDto extends WithSessionId(class Base {}) {
     @IsNumber()
     index: number;
 }

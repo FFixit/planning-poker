@@ -1,3 +1,3 @@
-import { SessionSpecific } from './base/session-specific.dto';
+import { WithSessionId } from './mixins/with-session-id';
 
-export class NextRoundDto extends SessionSpecific {}
+export class NextRoundDto extends WithSessionId(class Base {}) {}

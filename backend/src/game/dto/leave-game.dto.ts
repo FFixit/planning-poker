@@ -1,2 +1,3 @@
-import { SessionSpecific } from './base/session-specific.dto';
-export class LeaveGameDto extends SessionSpecific {}
+import { WithSessionId } from './mixins/with-session-id';
+
+export class LeaveGameDto extends WithSessionId(class Base {}) {}

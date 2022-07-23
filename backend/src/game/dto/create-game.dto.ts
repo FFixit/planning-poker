@@ -1,12 +1,9 @@
-import { ArrayNotEmpty, IsArray, IsNotEmpty, IsString } from 'class-validator';
+import { ArrayNotEmpty, IsArray, IsString } from 'class-validator';
+import { WithPlayerName } from './mixins/with-player-name';
 
-export class CreateGameDto {
+export class CreateGameDto extends WithPlayerName(class Base {}) {
     @IsArray()
     @ArrayNotEmpty()
     @IsString({ each: true })
     cards: Array<string>;
-
-    @IsString()
-    @IsNotEmpty()
-    playerName: string;
 }
