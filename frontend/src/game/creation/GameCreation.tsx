@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSocket } from "../gameview/components/SocketProvider";
 import CardEditor from "./CardEditor";
@@ -25,11 +25,32 @@ function GameCreation() {
 	]);
 	const [playerName, setPlayerName] = useState("");
 
+	const checkInputValidity: React.FormEventHandler<HTMLInputElement> = (
+		event
+	) => {
+		const target = event.target as HTMLInputElement;
+		const currentValue = target.value;
+		if (currentValue.length < 3) {
+			target.setCustomValidity("Name must be at least 3 characters long");
+		} else if (currentValue.length > 15) {
+			target.setCustomValidity(
+				"Name cannot be longer than 15 characters"
+			);
+			target.reportValidity();
+		} else {
+			target.setCustomValidity("");
+		}
+		target.checkValidity();
+	};
+
 	const validate = () => {
+		const playerNameInput =
+			document.querySelector<HTMLInputElement>("#player-name-input");
 		const isValid =
 			cards.length > 0 &&
 			typeof playerName === "string" &&
-			playerName !== "";
+			playerName !== "" &&
+			playerNameInput?.checkValidity();
 		return isValid;
 	};
 
@@ -55,9 +76,11 @@ function GameCreation() {
 				<div className="game-creation-player">
 					<h1>Your Name:</h1>
 					<input
+						id="player-name-input"
 						type="text"
 						name="name"
 						value={playerName}
+						onInput={checkInputValidity}
 						onChange={(event) => setPlayerName(event.target.value)}
 					/>
 				</div>

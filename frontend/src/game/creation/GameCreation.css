@@ -27,6 +27,11 @@ div.game-creation div.game-creation-player > input {
 	font-size: 2rem;
 }
 
+div.game-creation div.game-creation-player > input:invalid {
+	border-color: var(--color-sig);
+	outline-color: var(--color-sig);
+}
+
 div.game-creation div.game-creation-cards {
 	padding: 1em 0 1em 0;
 	height: 100%;

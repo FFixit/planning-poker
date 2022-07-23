@@ -40,3 +40,8 @@ div.player-creation > form.player-creation-form input {
 div.player-creation > form.player-creation-form input[type="text"] {
 	margin: 0 0 1em 1em;
 }
+
+div.player-creation > form.player-creation-form input[type="text"]:invalid {
+	border-color: var(--color-sig);
+	outline-color: var(--color-sig);
+}
