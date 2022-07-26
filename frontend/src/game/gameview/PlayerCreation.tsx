@@ -1,4 +1,4 @@
-import { FormEventHandler, useState } from "react";
+import { FormEvent, FormEventHandler, useState } from "react";
 import "./PlayerCreation.css";
 
 type PlayerCreationArgs = {
@@ -7,31 +7,33 @@ type PlayerCreationArgs = {
 
 function PlayerCreation({ onPlayerCreation }: PlayerCreationArgs) {
 	const [name, setName] = useState("Player");
+	const [isValid, setValid] = useState(true);
 
-	const checkInputValidity: FormEventHandler<HTMLInputElement> = (event) => {
-		const target = event.target as HTMLInputElement;
-		const currentValue = target.value;
-		if (currentValue.length < 3) {
-			target.setCustomValidity("Name must be at least 3 characters long");
-		} else if (currentValue.length > 15) {
-			target.setCustomValidity(
+	const updateValidity = (
+		inputElement: HTMLInputElement,
+		newValue: string
+	) => {
+		if (newValue.length < 3) {
+			inputElement.setCustomValidity(
+				"Name must be at least 3 characters long"
+			);
+			setValid(false);
+		} else if (newValue.length > 15) {
+			inputElement.setCustomValidity(
 				"Name cannot be longer than 15 characters"
 			);
-			target.reportValidity();
+			inputElement.reportValidity();
+			setValid(false);
 		} else {
-			target.setCustomValidity("");
+			inputElement.setCustomValidity("");
+			setValid(true);
 		}
-		target.checkValidity();
 	};
 
-	const validate = () => {
-		const playerNameInput =
-			document.querySelector<HTMLInputElement>("#player-name-input");
-		return (
-			typeof name === "string" &&
-			name !== "" &&
-			playerNameInput?.checkValidity()
-		);
+	const onChange = (event: FormEvent<HTMLInputElement>) => {
+		const target = event.target as HTMLInputElement;
+		setName(target.value);
+		updateValidity(target, target.value);
 	};
 
 	return (
@@ -50,13 +52,12 @@ function PlayerCreation({ onPlayerCreation }: PlayerCreationArgs) {
 						type="text"
 						name="name"
 						value={name}
-						onInput={checkInputValidity}
-						onChange={(event) => setName(event.target.value)}
+						onChange={onChange}
 					/>
 				</label>
 				<input
 					className="button"
-					disabled={!validate()}
+					disabled={!isValid}
 					type="submit"
 					value="Join Game"
 				/>
