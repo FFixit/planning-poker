@@ -60,7 +60,9 @@ export default function Player({
 
 	return (
 		<div className="player">
-			{isAdmin && <FontAwesomeIcon icon={faCrown} />}
+			<div className="admin-crown">
+				{isAdmin && <FontAwesomeIcon icon={faCrown} />}
+			</div>
 			<div className={cssClasses.join(" ")} title={cardTooltip}>
 				{displayValue}
 			</div>

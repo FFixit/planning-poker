@@ -4,6 +4,7 @@ div.player {
 	flex-direction: column;
 	align-items: center;
 	animation: grow 1s ease;
+	position: relative;
 }
 
 @keyframes grow {
@@ -14,6 +15,11 @@ div.player {
 	to {
 		transform: scale(1);
 	}
+}
+
+div.player > div.admin-crown {
+	position: absolute;
+	top: -3rem;
 }
 
 div.player > div.card {
