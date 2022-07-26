@@ -20,7 +20,9 @@ function Card({ active, value, selected, index, onClick }: CardArgs) {
 		<div
 			className={classNames.join(" ")}
 			onClick={() => {
-				onClick(index);
+				if (active) {
+					onClick(index);
+				}
 			}}
 		>
 			<p>{value}</p>
