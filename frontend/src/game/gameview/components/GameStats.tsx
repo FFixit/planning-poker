@@ -10,6 +10,7 @@ function GameStats({ gameStats }: GameStatsArgs) {
 	const otherStrings =
 		(gameStats &&
 			gameStats.others
+				.filter((entry) => typeof entry.key !== "undefined")
 				.map((entry) => entry.count + "x" + entry.key)
 				.join(", ")) ||
 		"-";
