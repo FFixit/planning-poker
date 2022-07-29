@@ -11,10 +11,20 @@ div.start-page {
 	flex-direction: column;
 }
 
-div.start-page > h1 {
+div.start-page > div.header {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+div.start-page > div.header > h1 {
 	margin: 1em 2em;
 	font-size: 2em;
 	text-align: center;
+}
+
+div.start-page > div.header > div.description {
+	font-size: 1.7rem;
 }
 
 div.start-page > div.main {

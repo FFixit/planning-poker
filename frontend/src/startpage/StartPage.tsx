@@ -4,7 +4,22 @@ import "./StartPage.css";
 function StartPage() {
 	return (
 		<div className="start-page">
-			<h1>Planning Poker</h1>
+			<div className="header">
+				<h1>Planning Poker</h1>
+				<div className="description">
+					<p>
+						Play the agile estimation game{" "}
+						<a
+							target="_blank"
+							rel="noopener noreferrer"
+							href="https://en.wikipedia.org/wiki/Planning_poker"
+						>
+							planning poker
+						</a>
+						!
+					</p>
+				</div>
+			</div>
 			<div className="main">
 				<div className="join-session">
 					<form>
@@ -16,7 +31,9 @@ function StartPage() {
 					</form>
 				</div>
 				<div className="create-session">
-					<Link className="button" to="/game">Create Session</Link>
+					<Link className="button" to="/game">
+						Create Session
+					</Link>
 				</div>
 			</div>
 		</div>
