@@ -38,30 +38,35 @@ function PlayerCreation({ onPlayerCreation }: PlayerCreationArgs) {
 
 	return (
 		<div className="player-creation">
-			<form
-				className="player-creation-form"
-				onSubmit={(event) => {
-					event.preventDefault();
-					onPlayerCreation(name);
-				}}
-			>
-				<label>
-					Name:
+			<div className="heading">
+				<h1>Join a session</h1>
+			</div>
+			<div className="settings">
+				<form
+					className="player-creation-form"
+					onSubmit={(event) => {
+						event.preventDefault();
+						onPlayerCreation(name);
+					}}
+				>
+					<label>
+						Name:
+						<input
+							id="player-name-input"
+							type="text"
+							name="name"
+							value={name}
+							onChange={onChange}
+						/>
+					</label>
 					<input
-						id="player-name-input"
-						type="text"
-						name="name"
-						value={name}
-						onChange={onChange}
+						className="button"
+						disabled={!isValid}
+						type="submit"
+						value="Join Game"
 					/>
-				</label>
-				<input
-					className="button"
-					disabled={!isValid}
-					type="submit"
-					value="Join Game"
-				/>
-			</form>
+				</form>
+			</div>
 		</div>
 	);
 }

@@ -8,40 +8,51 @@ div.player-creation {
 	align-items: center;
 }
 
-div.player-creation > form.player-creation-form {
+div.player-creation > div.heading {
+	font-size: 2rem;
+}
+
+div.player-creation > div.settings {
+	flex: 1;
+	display: grid;
+	place-items: center;
+	width: 100%;
+}
+
+div.player-creation form.player-creation-form {
 	width: 25%;
 	display: flex;
 	flex-direction: column;
 }
 
-div.player-creation > form.player-creation-form > label {
+div.player-creation form.player-creation-form > label {
 	width: 100%;
 	display: flex;
 	flex-direction: row;
 	flex-wrap: nowrap;
 }
 
-div.player-creation > form.player-creation-form > label > * {
+div.player-creation form.player-creation-form > label > * {
 	margin: 0;
 	padding: 0;
 	min-width: 0;
 	flex-basis: 100%;
 }
 
-div.player-creation > form.player-creation-form > label > p {
+div.player-creation form.player-creation-form > label > p {
 	white-space: nowrap;
 	flex-shrink: 2;
 }
 
-div.player-creation > form.player-creation-form input {
+div.player-creation form.player-creation-form input {
 	font-size: inherit;
 }
 
-div.player-creation > form.player-creation-form input[type="text"] {
+div.player-creation form.player-creation-form input[type="text"] {
 	margin: 0 0 1em 1em;
 }
 
-div.player-creation > form.player-creation-form input[type="text"]:invalid {
+div.player-creation form.player-creation-form input[type="text"]:invalid {
 	border-color: var(--color-sig);
 	outline-color: var(--color-sig);
 }
