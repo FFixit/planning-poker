@@ -66,33 +66,40 @@ function GameCreation() {
 
 	return (
 		<div className="game-creation">
-			<div className="left-section">
-				<div className="game-creation-cards">
-					<h1>Cards:</h1>
-					<CardEditor cards={cards} setCards={setCards} />
-				</div>
+			<div className="heading">
+				<h1>Create a session</h1>
 			</div>
-			<div className="right-section">
-				<div className="game-creation-player">
-					<h1>Your Name:</h1>
-					<input
-						id="player-name-input"
-						type="text"
-						name="name"
-						value={playerName}
-						onInput={checkInputValidity}
-						onChange={(event) => setPlayerName(event.target.value)}
-					/>
+			<div className="settings">
+				<div className="left-section">
+					<div className="game-creation-cards">
+						<h2>Cards:</h2>
+						<CardEditor cards={cards} setCards={setCards} />
+					</div>
 				</div>
+				<div className="right-section">
+					<div className="game-creation-player">
+						<h2>Your Name:</h2>
+						<input
+							id="player-name-input"
+							type="text"
+							name="name"
+							value={playerName}
+							onInput={checkInputValidity}
+							onChange={(event) =>
+								setPlayerName(event.target.value)
+							}
+						/>
+					</div>
 
-				<div className="game-creation-button">
-					<button
-						className="button create-button"
-						disabled={!validate()}
-						onClick={createGame}
-					>
-						Create
-					</button>
+					<div className="game-creation-button">
+						<button
+							className="button create-button"
+							disabled={!validate()}
+							onClick={createGame}
+						>
+							Create
+						</button>
+					</div>
 				</div>
 			</div>
 		</div>
