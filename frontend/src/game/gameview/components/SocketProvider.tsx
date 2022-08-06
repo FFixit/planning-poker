@@ -16,11 +16,16 @@ export function SocketProvider(
 	const [setError] = useError();
 	const [connected, setConnected] = useState(false);
 
+	const url = import.meta.env.VITE_BACKEND_URL;
+
 	useEffect(() => {
 		let socket: Socket;
 		if (!refSocket.current) {
-			console.log("GameOutlet Effect: Socket connect");
-			socket = socketio("/", { autoConnect: false });
+			console.log("GameOutlet Effect: Socket connect", url);
+			socket = socketio(url, {
+				autoConnect: false,
+				transports: ["websocket"],
+			});
 			socket.connect();
 
 			socket.onAny((event, data) => {
