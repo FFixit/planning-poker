@@ -12,7 +12,7 @@ describe('GameMangerLib', () => {
     const creatorName = 'Player123';
 
     beforeEach(async () => {
-        gameState = new GameState(cards, creatorId, creatorName);
+        gameState = new GameState(cards, 10, creatorId, creatorName);
 
         jest.clearAllMocks();
     });

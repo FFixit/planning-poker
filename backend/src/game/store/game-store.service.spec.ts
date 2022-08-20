@@ -33,7 +33,7 @@ describe('GameStoreService', () => {
             let game: GameState;
             let gameState: GameState;
             beforeEach(() => {
-                gameState = new GameState(cards, creatorId, creatorName);
+                gameState = new GameState(cards, 10, creatorId, creatorName);
                 gameStoreService['games'] = new Map();
                 gameStoreService['games'].set(mockSessionId, gameState);
                 game = gameStoreService.getSessionOrThrowError(mockSessionId);
@@ -85,7 +85,7 @@ describe('GameStoreService', () => {
 
         describe('when removeSession is called', () => {
             beforeEach(() => {
-                const gameState = new GameState(cards, creatorId, creatorName);
+                const gameState = new GameState(cards, 10, creatorId, creatorName);
                 gameStoreService['games'] = new Map();
                 gameStoreService['games'].set(mockSessionId, gameState);
                 gameStoreService.removeSession(mockSessionId);
@@ -104,7 +104,7 @@ describe('GameStoreService', () => {
         describe('when getPlayersCurrentSession is called', () => {
             let sessionId: string;
             beforeEach(() => {
-                const gameState = new GameState(cards, creatorId, creatorName);
+                const gameState = new GameState(cards, 10, creatorId, creatorName);
                 gameStoreService['games'] = new Map();
                 gameStoreService['games'].set(mockSessionId, gameState);
                 sessionId = gameStoreService.getPlayersCurrentSession(creatorId);

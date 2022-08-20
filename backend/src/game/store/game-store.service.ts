@@ -25,7 +25,7 @@ export class GameStoreService {
             'creator name:',
             creatorPlayerName,
         );
-        const gameState = new GameState(cards, creatorId, creatorPlayerName);
+        const gameState = new GameState(cards, 10, creatorId, creatorPlayerName);
         this.games.set(sessionId, gameState);
         this.logger.write('Current number of sessions:', this.games.size);
         return sessionId;

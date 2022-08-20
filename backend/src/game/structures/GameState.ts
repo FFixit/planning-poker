@@ -14,11 +14,18 @@ export default class GameState {
     private timeCreated: Date;
     private gameStats: TGameStats = null;
     private subject: Subject<TGameStateObject>;
+    private roundTime: number;
     private currentTimeLeft: number = null;
 
-    constructor(cards: string[], firstPlayerId: string, firstPlayerName: string) {
+    constructor(
+        cards: string[],
+        roundTime: number,
+        firstPlayerId: string,
+        firstPlayerName: string,
+    ) {
         this.gameStage = GameStage.WaitingForPlayers;
         this.cards = cards;
+        this.roundTime = roundTime;
         this.timeCreated = new Date();
         this.players.set(firstPlayerId, new Player(firstPlayerName));
         this.adminId = firstPlayerId;
@@ -129,11 +136,10 @@ export default class GameState {
 
     private startTimer() {
         const INTERVAL = 1000;
-        const LENGTH = 10;
         const timer$ = interval(INTERVAL).pipe(
-            take(LENGTH + 1),
+            take(this.roundTime + 1),
             map((interval) => {
-                const secondsLeft = LENGTH - interval;
+                const secondsLeft = this.roundTime - interval;
                 this.currentTimeLeft = secondsLeft;
                 return this.toObject();
             }),
