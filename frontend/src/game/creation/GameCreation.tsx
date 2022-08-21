@@ -23,9 +23,10 @@ function GameCreation() {
 		"?",
 		"☕",
 	]);
-	const [playerName, setPlayerName] = useState("");
+	const [playerName, setPlayerName] = useState("Player");
+	const [roundTime, setRoundTime] = useState(10);
 
-	const checkInputValidity: React.FormEventHandler<HTMLInputElement> = (
+	const checkPlayerName: React.FormEventHandler<HTMLInputElement> = (
 		event
 	) => {
 		const target = event.target as HTMLInputElement;
@@ -42,22 +43,44 @@ function GameCreation() {
 		}
 		target.checkValidity();
 	};
+	const checkRoundTime: React.FormEventHandler<HTMLInputElement> = (
+		event
+	) => {
+		const target = event.target as HTMLInputElement;
+		const currentValue = parseInt(target.value);
+		if (currentValue < 1) {
+			target.setCustomValidity(
+				"Round time must be greater than 1 seconds"
+			);
+		} else if (currentValue > 60) {
+			target.setCustomValidity(
+				"Round time cannot be longer than 60 seconds"
+			);
+			target.reportValidity();
+		} else {
+			target.setCustomValidity("");
+		}
+		target.checkValidity();
+	};
 
 	const validate = () => {
 		const playerNameInput =
 			document.querySelector<HTMLInputElement>("#player-name-input");
+		const roundTimeInput =
+			document.querySelector<HTMLInputElement>("#round-time-input");
 		const isValid =
 			cards.length > 0 &&
 			typeof playerName === "string" &&
 			playerName !== "" &&
-			playerNameInput?.checkValidity();
+			playerNameInput?.checkValidity() &&
+			roundTimeInput?.checkValidity();
 		return isValid;
 	};
 
 	const createGame = () => {
 		socket.emit(
 			"create-game",
-			{ cards, playerName },
+			{ cards, roundTime, playerName },
 			(sessionId: string) => {
 				navigate(sessionId);
 			}
@@ -77,20 +100,35 @@ function GameCreation() {
 					</div>
 				</div>
 				<div className="right-section">
-					<div className="game-creation-player">
-						<h2>Your Name:</h2>
-						<input
-							id="player-name-input"
-							type="text"
-							name="name"
-							value={playerName}
-							onInput={checkInputValidity}
-							onChange={(event) =>
-								setPlayerName(event.target.value)
-							}
-						/>
+					<div className="game-creation-settings">
+						<div className="game-creation-player">
+							<h2>Your Name:</h2>
+							<input
+								id="player-name-input"
+								type="text"
+								value={playerName}
+								onInput={checkPlayerName}
+								onChange={(event) =>
+									setPlayerName(event.target.value)
+								}
+							/>
+						</div>
+						<div className="game-creation-round-time">
+							<h2>Round duration (sec.):</h2>
+							<input
+								id="round-time-input"
+								type="number"
+								min={1}
+								max={60}
+								step={1}
+								value={roundTime}
+								onInput={checkRoundTime}
+								onChange={(event) =>
+									setRoundTime(parseInt(event.target.value))
+								}
+							/>
+						</div>
 					</div>
-
 					<div className="game-creation-button">
 						<button
 							className="button create-button"

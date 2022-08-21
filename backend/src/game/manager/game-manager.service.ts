@@ -12,8 +12,18 @@ export class GameManagerService {
         return game.getGameStateObservable();
     }
 
-    createGameSession(cards: string[], creatorPlayerName: string, clientId: string): string {
-        const sessionId = this.gameStore.createSession(cards, clientId, creatorPlayerName);
+    createGameSession(
+        cards: string[],
+        roundTime: number,
+        creatorPlayerName: string,
+        clientId: string,
+    ): string {
+        const sessionId = this.gameStore.createSession(
+            cards,
+            roundTime,
+            clientId,
+            creatorPlayerName,
+        );
         return sessionId;
     }
 

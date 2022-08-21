@@ -34,14 +34,26 @@ div.game-creation h2 {
 	margin: 0 0 0.5em 0.5em;
 }
 
-div.game-creation div.game-creation-player {
+div.game-creation div.game-creation-settings {
 	min-width: 50%;
+	display: flex;
+	flex-direction: column;
+	gap: 2em;
 }
-div.game-creation div.game-creation-player > input {
+div.game-creation div.game-creation-settings input {
 	width: 100%;
 	box-sizing: border-box;
 	font-size: 2rem;
 }
+
+/* div.game-creation div.game-creation-round-time {
+	min-width: 50%;
+}
+div.game-creation div.game-creation-round-time > input {
+	width: 100%;
+	box-sizing: border-box;
+	font-size: 2rem;
+} */
 
 div.game-creation div.game-creation-player > input:invalid {
 	border-color: var(--color-sig);

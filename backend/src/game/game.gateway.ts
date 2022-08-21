@@ -47,10 +47,15 @@ export class GameGateway implements OnGatewayConnection {
 
     @SubscribeMessage('create-game')
     handleCreateGame(
-        @MessageBody() { cards, playerName }: CreateGameDto,
+        @MessageBody() { cards, roundTime, playerName }: CreateGameDto,
         @ConnectedSocket() client: Socket,
     ): string {
-        const sessionId = this.gameManager.createGameSession(cards, playerName, client.id);
+        const sessionId = this.gameManager.createGameSession(
+            cards,
+            roundTime,
+            playerName,
+            client.id,
+        );
         return sessionId;
     }
 

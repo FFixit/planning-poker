@@ -17,7 +17,12 @@ export class GameStoreService {
         return game;
     }
 
-    createSession(cards: string[], creatorId: string, creatorPlayerName: string) {
+    createSession(
+        cards: string[],
+        roundTime: number,
+        creatorId: string,
+        creatorPlayerName: string,
+    ) {
         const sessionId = this.lib.getNextGameId();
         this.logger.write(
             'Creating Session',
@@ -25,7 +30,7 @@ export class GameStoreService {
             'creator name:',
             creatorPlayerName,
         );
-        const gameState = new GameState(cards, 10, creatorId, creatorPlayerName);
+        const gameState = new GameState(cards, roundTime, creatorId, creatorPlayerName);
         this.games.set(sessionId, gameState);
         this.logger.write('Current number of sessions:', this.games.size);
         return sessionId;
