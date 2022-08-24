@@ -66,6 +66,21 @@ body {
 	-moz-osx-font-smoothing: grayscale;
 }
 
+a,
+a:visited {
+	color: var(--color-1);
+}
+a:hover {
+	color: var(--color-1-sat);
+}
+a:active {
+	color: var(--color-2);
+}
+
+input {
+	font-size: inherit;
+}
+
 #root {
 	height: 100%;
 	margin: 0;
@@ -74,7 +89,7 @@ body {
 }
 
 .button {
-	color: black;
+	color: black !important;
 	border: none;
 	background: white;
 	border-radius: 0.2em;

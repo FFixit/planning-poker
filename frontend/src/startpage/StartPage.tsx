@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import Footer from "../misc/Footer";
 import "./StartPage.css";
 
 function StartPage() {
@@ -36,6 +37,7 @@ function StartPage() {
 					</Link>
 				</div>
 			</div>
+			<Footer />
 		</div>
 	);
 }

@@ -1,5 +1,4 @@
 div.start-page * {
-	font-size: inherit;
 	font-family: inherit;
 }
 
@@ -29,6 +28,7 @@ div.start-page > div.header > div.description {
 
 div.start-page > div.main {
 	flex-basis: 100%;
+	font-size: 2rem;
 	display: flex;
 	flex-direction: row;
 	width: 100%;
