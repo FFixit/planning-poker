@@ -24,7 +24,9 @@ function GameCreation() {
 		"☕",
 	]);
 	const [playerName, setPlayerName] = useState("Player");
+	const [isPlayerNameValid, setPlayerNameValid] = useState(true);
 	const [roundTime, setRoundTime] = useState(10);
+	const [isRoundTimeValid, setRoundTimeValid] = useState(true);
 
 	const checkPlayerName: React.FormEventHandler<HTMLInputElement> = (
 		event
@@ -32,13 +34,16 @@ function GameCreation() {
 		const target = event.target as HTMLInputElement;
 		const currentValue = target.value;
 		if (currentValue.length < 3) {
+			setPlayerNameValid(false);
 			target.setCustomValidity("Name must be at least 3 characters long");
 		} else if (currentValue.length > 15) {
+			setPlayerNameValid(false);
 			target.setCustomValidity(
 				"Name cannot be longer than 15 characters"
 			);
 			target.reportValidity();
 		} else {
+			setPlayerNameValid(true);
 			target.setCustomValidity("");
 		}
 		target.checkValidity();
@@ -49,31 +54,26 @@ function GameCreation() {
 		const target = event.target as HTMLInputElement;
 		const currentValue = parseInt(target.value);
 		if (currentValue < 1) {
+			setRoundTimeValid(false);
 			target.setCustomValidity(
 				"Round time must be greater than 1 seconds"
 			);
 		} else if (currentValue > 60) {
+			setRoundTimeValid(false);
 			target.setCustomValidity(
 				"Round time cannot be longer than 60 seconds"
 			);
 			target.reportValidity();
 		} else {
+			setRoundTimeValid(true);
 			target.setCustomValidity("");
 		}
 		target.checkValidity();
 	};
 
 	const validate = () => {
-		const playerNameInput =
-			document.querySelector<HTMLInputElement>("#player-name-input");
-		const roundTimeInput =
-			document.querySelector<HTMLInputElement>("#round-time-input");
-		const isValid =
-			cards.length > 0 &&
-			typeof playerName === "string" &&
-			playerName !== "" &&
-			playerNameInput?.checkValidity() &&
-			roundTimeInput?.checkValidity();
+		const isValid = isPlayerNameValid && isRoundTimeValid;
+		console.log("isValid", isValid);
 		return isValid;
 	};
 
