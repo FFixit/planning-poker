@@ -24,7 +24,6 @@ div.editable-card > button.remove-button {
 	border: 0.2em solid lightcyan;
 	margin: 0 1em 1em 1em;
 	border-radius: 0.5em;
-	box-sizing: content-box;
     padding: 0;
 }
 
